@@ -14,10 +14,10 @@
 		B838D32C1FC4326000A7FCE9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B838D32A1FC4326000A7FCE9 /* LaunchScreen.storyboard */; };
 		B838D3371FC4326000A7FCE9 /* GojekContactsAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D3361FC4326000A7FCE9 /* GojekContactsAppTests.swift */; };
 		B838D3421FC4326000A7FCE9 /* GojekContactsAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D3411FC4326000A7FCE9 /* GojekContactsAppUITests.swift */; };
-		B838D35F1FC43B2700A7FCE9 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B838D35D1FC43B2600A7FCE9 /* Realm.framework */; };
-		B838D3601FC43B2700A7FCE9 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B838D35D1FC43B2600A7FCE9 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		B838D3611FC43B2700A7FCE9 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B838D35E1FC43B2700A7FCE9 /* RealmSwift.framework */; };
-		B838D3621FC43B2700A7FCE9 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B838D35E1FC43B2700A7FCE9 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B838D3661FC43DD800A7FCE9 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3641FC43DD700A7FCE9 /* Realm.framework */; };
+		B838D3671FC43DD800A7FCE9 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3641FC43DD700A7FCE9 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B838D3681FC43DD800A7FCE9 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */; };
+		B838D3691FC43DD800A7FCE9 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,14 +38,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		B838D3631FC43B2700A7FCE9 /* Embed Frameworks */ = {
+		B838D36A1FC43DD800A7FCE9 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B838D3621FC43B2700A7FCE9 /* RealmSwift.framework in Embed Frameworks */,
-				B838D3601FC43B2700A7FCE9 /* Realm.framework in Embed Frameworks */,
+				B838D3691FC43DD800A7FCE9 /* RealmSwift.framework in Embed Frameworks */,
+				B838D3671FC43DD800A7FCE9 /* Realm.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -66,8 +66,8 @@
 		B838D33D1FC4326000A7FCE9 /* GojekContactsAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GojekContactsAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B838D3411FC4326000A7FCE9 /* GojekContactsAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GojekContactsAppUITests.swift; sourceTree = "<group>"; };
 		B838D3431FC4326000A7FCE9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B838D35D1FC43B2600A7FCE9 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
-		B838D35E1FC43B2700A7FCE9 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
+		B838D3641FC43DD700A7FCE9 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
+		B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,8 +75,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B838D3611FC43B2700A7FCE9 /* RealmSwift.framework in Frameworks */,
-				B838D35F1FC43B2700A7FCE9 /* Realm.framework in Frameworks */,
+				B838D3681FC43DD800A7FCE9 /* RealmSwift.framework in Frameworks */,
+				B838D3661FC43DD800A7FCE9 /* Realm.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,8 +100,8 @@
 		B838D3151FC4326000A7FCE9 = {
 			isa = PBXGroup;
 			children = (
-				B838D35D1FC43B2600A7FCE9 /* Realm.framework */,
-				B838D35E1FC43B2700A7FCE9 /* RealmSwift.framework */,
+				B838D3641FC43DD700A7FCE9 /* Realm.framework */,
+				B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */,
 				B838D3201FC4326000A7FCE9 /* GojekContactsApp */,
 				B838D3351FC4326000A7FCE9 /* GojekContactsAppTests */,
 				B838D3401FC4326000A7FCE9 /* GojekContactsAppUITests */,
@@ -169,7 +169,7 @@
 				B838D31B1FC4326000A7FCE9 /* Frameworks */,
 				B838D31C1FC4326000A7FCE9 /* Resources */,
 				B838D35C1FC4397300A7FCE9 /* ShellScript */,
-				B838D3631FC43B2700A7FCE9 /* Embed Frameworks */,
+				B838D36A1FC43DD800A7FCE9 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
