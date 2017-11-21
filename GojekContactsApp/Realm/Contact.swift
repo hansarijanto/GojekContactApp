@@ -15,13 +15,13 @@ import RealmSwift
 
 class Contact: Object {
     @objc private(set) dynamic var id : String = UUID().uuidString
-    @objc dynamic var apiId           : Int    = 0
+    @objc dynamic var apiId           : Int    = -1 // -1 is invalid
     
-    @objc dynamic var firstName  : String = ""
-    @objc dynamic var lastName   : String = ""
-    @objc dynamic var email      : String = ""
-    @objc dynamic var mobile     : String = ""
-    @objc dynamic var imgUrl     : String = ""
+    @objc dynamic var firstName  : String? = nil
+    @objc dynamic var lastName   : String? = nil
+    @objc dynamic var email      : String? = nil
+    @objc dynamic var mobile     : String? = nil
+    @objc dynamic var imgUrl     : String? = nil
     @objc dynamic var isFavorite : Bool = false
     
     override static func primaryKey() -> String? {

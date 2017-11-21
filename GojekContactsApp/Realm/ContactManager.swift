@@ -73,18 +73,38 @@ class ContactManager {
                 
                 // loop through json array of contacts data
                 for personData in dataArr {
-                    if let firstName  = personData["first_name"] as? String, let lastName = personData["last_name"] as? String, var imgUrl = personData["profile_pic"] as? String, let isFavorite = personData["favorite"] as? Bool, let apiId = personData["id"] as? Int {
-
+                    
+                    let contact = Contact()
+                    
+                    if let firstName = personData["first_name"] as? String {
+                        contact.firstName  = firstName
+                    }
+                    
+                    if let lastName = personData["last_name"] as? String {
+                        contact.lastName  = lastName
+                    }
+                    
+                    if var imgUrl = personData["profile_pic"] as? String {
                         // completing the url for missing images
                         if imgUrl == "/images/missing.png" {
                             imgUrl = ContactManager.gojekBaseUrl + imgUrl
                         }
-                        
-                        // added new contact to realm
-                        if !ContactManager.shared.saveNewContact(firstName: firstName, lastName: lastName, isFavorite: isFavorite, imgUrl: imgUrl, apiId: apiId) {
-                            print("Failed to save contact after download to realm with id: \(apiId)")
-                        }
+                        contact.imgUrl = imgUrl
                     }
+                    
+                    if let isFavorite = personData["favorite"] as? Bool {
+                        contact.isFavorite = isFavorite
+                    }
+                    
+                    if let apiId = personData["id"] as? Int {
+                        contact.apiId = apiId
+                    }
+                    
+                    // added new contact to realm
+                    if !self.saveNewContact(contact: contact) {
+                        print("Failed to save contact after download to realm with id: \(contact.apiId)")
+                    }
+                    
                 }
                 
                 UserDefaults.standard.set(true, forKey: ContactManager.didDownloadKey)
@@ -101,17 +121,11 @@ class ContactManager {
     }
     
     // saves a new contact into realm, returns true if successful
-    public func saveNewContact(firstName: String, lastName: String, isFavorite: Bool, imgUrl: String, apiId: Int) -> Bool {
+    public func saveNewContact(contact: Contact) -> Bool {
         var isSuccess: Bool = false
         let realm: Realm = try! Realm()
         do {
             try realm.write {
-                let contact = Contact()
-                contact.firstName  = firstName
-                contact.lastName   = lastName
-                contact.isFavorite = isFavorite
-                contact.imgUrl     = imgUrl
-                contact.apiId      = apiId
                 realm.add(contact)
                 isSuccess = true
             }
