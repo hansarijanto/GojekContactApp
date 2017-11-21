@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B80AA45B1FC4619500286B80 /* HTTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80AA45A1FC4619500286B80 /* HTTPManager.swift */; };
+		B80AA4691FC46F8300286B80 /* NSLayoutConstraint+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B80AA4601FC46F8100286B80 /* NSLayoutConstraint+PureLayout.m */; };
+		B80AA46A1FC46F8300286B80 /* ALView+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B80AA4621FC46F8200286B80 /* ALView+PureLayout.m */; };
+		B80AA46B1FC46F8300286B80 /* NSArray+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B80AA4671FC46F8200286B80 /* NSArray+PureLayout.m */; };
+		B80AA46F1FC4710100286B80 /* ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80AA46E1FC4710100286B80 /* ContactManager.swift */; };
 		B838D3221FC4326000A7FCE9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D3211FC4326000A7FCE9 /* AppDelegate.swift */; };
 		B838D3241FC4326000A7FCE9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D3231FC4326000A7FCE9 /* ViewController.swift */; };
 		B838D3271FC4326000A7FCE9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B838D3251FC4326000A7FCE9 /* Main.storyboard */; };
@@ -18,7 +23,6 @@
 		B838D3671FC43DD800A7FCE9 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3641FC43DD700A7FCE9 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B838D3681FC43DD800A7FCE9 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */; };
 		B838D3691FC43DD800A7FCE9 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		B838D36C1FC4415500A7FCE9 /* ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D36B1FC4415500A7FCE9 /* ContactManager.swift */; };
 		B838D36F1FC4432B00A7FCE9 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D36E1FC4432B00A7FCE9 /* Contact.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +59,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B80AA45A1FC4619500286B80 /* HTTPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPManager.swift; sourceTree = "<group>"; };
+		B80AA45E1FC46BAE00286B80 /* GojekContactsApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GojekContactsApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		B80AA4601FC46F8100286B80 /* NSLayoutConstraint+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+PureLayout.m"; sourceTree = "<group>"; };
+		B80AA4611FC46F8100286B80 /* NSArray+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+PureLayout.h"; sourceTree = "<group>"; };
+		B80AA4621FC46F8200286B80 /* ALView+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALView+PureLayout.m"; sourceTree = "<group>"; };
+		B80AA4631FC46F8200286B80 /* ALView+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALView+PureLayout.h"; sourceTree = "<group>"; };
+		B80AA4641FC46F8200286B80 /* PureLayout+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PureLayout+Internal.h"; sourceTree = "<group>"; };
+		B80AA4651FC46F8200286B80 /* PureLayoutDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PureLayoutDefines.h; sourceTree = "<group>"; };
+		B80AA4661FC46F8200286B80 /* PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PureLayout.h; sourceTree = "<group>"; };
+		B80AA4671FC46F8200286B80 /* NSArray+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+PureLayout.m"; sourceTree = "<group>"; };
+		B80AA4681FC46F8200286B80 /* NSLayoutConstraint+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+PureLayout.h"; sourceTree = "<group>"; };
+		B80AA46E1FC4710100286B80 /* ContactManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactManager.swift; sourceTree = "<group>"; };
 		B838D31E1FC4326000A7FCE9 /* GojekContactsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GojekContactsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B838D3211FC4326000A7FCE9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B838D3231FC4326000A7FCE9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -70,7 +86,6 @@
 		B838D3431FC4326000A7FCE9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B838D3641FC43DD700A7FCE9 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
-		B838D36B1FC4415500A7FCE9 /* ContactManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactManager.swift; sourceTree = "<group>"; };
 		B838D36E1FC4432B00A7FCE9 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,6 +116,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B80AA4591FC4616E00286B80 /* HTTP */ = {
+			isa = PBXGroup;
+			children = (
+				B80AA45A1FC4619500286B80 /* HTTPManager.swift */,
+			);
+			path = HTTP;
+			sourceTree = "<group>";
+		};
+		B80AA46C1FC46FC800286B80 /* PureLayout */ = {
+			isa = PBXGroup;
+			children = (
+				B80AA4631FC46F8200286B80 /* ALView+PureLayout.h */,
+				B80AA4621FC46F8200286B80 /* ALView+PureLayout.m */,
+				B80AA4611FC46F8100286B80 /* NSArray+PureLayout.h */,
+				B80AA4671FC46F8200286B80 /* NSArray+PureLayout.m */,
+				B80AA4681FC46F8200286B80 /* NSLayoutConstraint+PureLayout.h */,
+				B80AA4601FC46F8100286B80 /* NSLayoutConstraint+PureLayout.m */,
+				B80AA4661FC46F8200286B80 /* PureLayout.h */,
+				B80AA4641FC46F8200286B80 /* PureLayout+Internal.h */,
+				B80AA4651FC46F8200286B80 /* PureLayoutDefines.h */,
+			);
+			path = PureLayout;
+			sourceTree = "<group>";
+		};
 		B838D3151FC4326000A7FCE9 = {
 			isa = PBXGroup;
 			children = (
@@ -125,6 +164,8 @@
 		B838D3201FC4326000A7FCE9 /* GojekContactsApp */ = {
 			isa = PBXGroup;
 			children = (
+				B80AA46C1FC46FC800286B80 /* PureLayout */,
+				B80AA4591FC4616E00286B80 /* HTTP */,
 				B838D36D1FC4416100A7FCE9 /* Realm */,
 				B838D3211FC4326000A7FCE9 /* AppDelegate.swift */,
 				B838D3231FC4326000A7FCE9 /* ViewController.swift */,
@@ -132,6 +173,7 @@
 				B838D3281FC4326000A7FCE9 /* Assets.xcassets */,
 				B838D32A1FC4326000A7FCE9 /* LaunchScreen.storyboard */,
 				B838D32D1FC4326000A7FCE9 /* Info.plist */,
+				B80AA45E1FC46BAE00286B80 /* GojekContactsApp-Bridging-Header.h */,
 			);
 			path = GojekContactsApp;
 			sourceTree = "<group>";
@@ -166,7 +208,7 @@
 		B838D36D1FC4416100A7FCE9 /* Realm */ = {
 			isa = PBXGroup;
 			children = (
-				B838D36B1FC4415500A7FCE9 /* ContactManager.swift */,
+				B80AA46E1FC4710100286B80 /* ContactManager.swift */,
 				B838D36E1FC4432B00A7FCE9 /* Contact.swift */,
 			);
 			path = Realm;
@@ -326,8 +368,12 @@
 			files = (
 				B838D36F1FC4432B00A7FCE9 /* Contact.swift in Sources */,
 				B838D3241FC4326000A7FCE9 /* ViewController.swift in Sources */,
+				B80AA45B1FC4619500286B80 /* HTTPManager.swift in Sources */,
+				B80AA46A1FC46F8300286B80 /* ALView+PureLayout.m in Sources */,
+				B80AA46B1FC46F8300286B80 /* NSArray+PureLayout.m in Sources */,
 				B838D3221FC4326000A7FCE9 /* AppDelegate.swift in Sources */,
-				B838D36C1FC4415500A7FCE9 /* ContactManager.swift in Sources */,
+				B80AA46F1FC4710100286B80 /* ContactManager.swift in Sources */,
+				B80AA4691FC46F8300286B80 /* NSLayoutConstraint+PureLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,6 +550,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = hansarijanto.GojekContactsApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/GojekContactsApp/GojekContactsApp-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -524,6 +571,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = hansarijanto.GojekContactsApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/GojekContactsApp/GojekContactsApp-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

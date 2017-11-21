@@ -1,5 +1,5 @@
 //
-//  RealmManager.swift
+//  ContactManager.swift
 //  GojekContactsApp
 //
 //  Created by Hans Arijanto on 11/21/17.
@@ -36,11 +36,17 @@ class ContactManager {
         Realm.Configuration.defaultConfiguration = config
     }
     
+    // grabs all contacts from the gojek API
+    //    public func fetchContacts() -> [Contact] {
+    //
+    //    }
+    
+    // returns all contact from realm
     public func contacts() -> [Contact] {
         return Array(self.realm.objects(Contact.self))
     }
     
-    // returns true if successful
+    // saves a new contact into realm, returns true if successful
     public func saveNewContact(contact: Contact) -> Bool {
         var isSuccess: Bool = false
         do {
@@ -55,3 +61,4 @@ class ContactManager {
         return isSuccess
     }
 }
+
