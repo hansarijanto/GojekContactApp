@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        ContactManager.shared.fetchContacts()
     }
 
     override func didReceiveMemoryWarning() {
