@@ -9,13 +9,14 @@
 import Foundation
 import RealmSwift
 
-class RealmManager {
+class ContactManager {
     // singleton
-    static let shared: RealmManager = RealmManager()
+    static let shared: ContactManager = ContactManager()
     
     private let realm: Realm
     
     init() {
+        // TODO: error handling in case realm error
         self.realm = try! Realm()
         
         // this function is called on app load to allow realm to edit the realm file even when the app is backgrounded
@@ -33,5 +34,24 @@ class RealmManager {
         config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("\(realmFileName).realm")
         // Set this as the configuration used for the default Realm
         Realm.Configuration.defaultConfiguration = config
+    }
+    
+    public func contacts() -> [Contact] {
+        return Array(self.realm.objects(Contact.self))
+    }
+    
+    // returns true if successful
+    public func saveNewContact(contact: Contact) -> Bool {
+        var isSuccess: Bool = false
+        do {
+            try realm.write {
+                realm.add(contact)
+                isSuccess = true
+            }
+        } catch let error as NSError {
+            print("saveNewContact in Contact Manager failed: \(error)")
+        }
+        
+        return isSuccess
     }
 }

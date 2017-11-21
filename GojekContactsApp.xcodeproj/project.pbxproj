@@ -18,7 +18,8 @@
 		B838D3671FC43DD800A7FCE9 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3641FC43DD700A7FCE9 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B838D3681FC43DD800A7FCE9 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */; };
 		B838D3691FC43DD800A7FCE9 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		B838D36C1FC4415500A7FCE9 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D36B1FC4415500A7FCE9 /* RealmManager.swift */; };
+		B838D36C1FC4415500A7FCE9 /* ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D36B1FC4415500A7FCE9 /* ContactManager.swift */; };
+		B838D36F1FC4432B00A7FCE9 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D36E1FC4432B00A7FCE9 /* Contact.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,7 +70,8 @@
 		B838D3431FC4326000A7FCE9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B838D3641FC43DD700A7FCE9 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
-		B838D36B1FC4415500A7FCE9 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
+		B838D36B1FC4415500A7FCE9 /* ContactManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactManager.swift; sourceTree = "<group>"; };
+		B838D36E1FC4432B00A7FCE9 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,7 +166,8 @@
 		B838D36D1FC4416100A7FCE9 /* Realm */ = {
 			isa = PBXGroup;
 			children = (
-				B838D36B1FC4415500A7FCE9 /* RealmManager.swift */,
+				B838D36B1FC4415500A7FCE9 /* ContactManager.swift */,
+				B838D36E1FC4432B00A7FCE9 /* Contact.swift */,
 			);
 			path = Realm;
 			sourceTree = "<group>";
@@ -321,9 +324,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B838D36F1FC4432B00A7FCE9 /* Contact.swift in Sources */,
 				B838D3241FC4326000A7FCE9 /* ViewController.swift in Sources */,
 				B838D3221FC4326000A7FCE9 /* AppDelegate.swift in Sources */,
-				B838D36C1FC4415500A7FCE9 /* RealmManager.swift in Sources */,
+				B838D36C1FC4415500A7FCE9 /* ContactManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
