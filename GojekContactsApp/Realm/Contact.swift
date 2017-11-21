@@ -14,10 +14,16 @@ import RealmSwift
 // let age = RealmOptional<Int>()
 
 class Contact: Object {
+    @objc private(set) dynamic var id : String = UUID().uuidString
+    
     @objc dynamic var firstName  : String = ""
     @objc dynamic var lastName   : String = ""
     @objc dynamic var email      : String = ""
     @objc dynamic var mobile     : String = ""
     @objc dynamic var imgUrl     : String = ""
     @objc dynamic var isFavorite : Bool = false
+    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
 }
