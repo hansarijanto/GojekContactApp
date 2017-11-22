@@ -64,14 +64,11 @@ extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
             
             // load product image
             if let contactImage = ContactManager.shared.loadContactImage(contact: contact) {
-                DispatchQueue.main.async {
-                    cell.contactImage.image = contactImage
-                }
+                cell.contactImageView.image     = contactImage
             }
             
-            DispatchQueue.main.async {
-                cell.nameTitleLabel.text = "\(contact.firstName!) \(contact.lastName!)"
-            }
+            cell.favoriteImageView.isHidden = !contact.isFavorite
+            cell.nameTitleLabel.text = "\(contact.firstName!) \(contact.lastName!)"
         }
         
         return cell
