@@ -48,7 +48,8 @@ extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
         let alphabet = self.contactsSections[indexPath.section]
         
 
-        if let contacts = self.contactsDict[alphabet], let contact = contacts[indexPath.row] as? Contact {
+        if let contacts = self.contactsDict[alphabet] {
+            let contact = contacts[indexPath.row]
             cell.textLabel?.text = contact.firstName
         }
         
