@@ -149,12 +149,12 @@ class ContactManager {
     
     private func filterContactsArrByAlphabet(contacts: [Contact], alphabet: String) -> [Contact] {
         return contacts.filter({
-            if let fn = $0.firstName, let firstCharacter = fn.first {
+            if let fn = $0.firstName, let firstCharacter = fn.lowercased().first {
                 if alphabet == "#" {
                     let sFC = String(firstCharacter)
-                    return sFC == "#" || !ContactManager.alphabet.contains(sFC)
+                    return sFC == "#" || !ContactManager.alphabet.contains(sFC.uppercased())
                 } else {
-                    return firstCharacter == alphabet.first
+                    return firstCharacter == alphabet.lowercased().first
                 }
             }
             

@@ -12,8 +12,11 @@ class ContactsViewController: UIViewController {
     private let navBarTitle       : String = "Contacts"     // bar title (Contacts)
     private let backgroundColor   : UIColor = UIColor.white // background color (white)
     
-    // contacts data
-    private(set) var contactsDict     : [String: [Contact]]  = [String: [Contact]]()
+    // contacts/table data
+    // the table view data assumes the following, contactsDict is pre sorted
+    // contact section represent the title of the tbale sections
+    // the contactsDict are keyed by it's prespective elements of contactsSection (alphabets in this instance)
+    private(set) var contactsDict     : [String: [Contact]]  = [String: [Contact]]() // key is alphabet, value are contacts associated to tht alphabet
     private(set) var contactsSections : [String] = [String]()
     
     // table view
