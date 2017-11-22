@@ -15,7 +15,7 @@ import RealmSwift
 
 class Contact: Object {
     @objc private(set) dynamic var id : String = UUID().uuidString
-    @objc dynamic var apiId           : Int    = -1 // -1 is invalid
+    @objc dynamic var apiId           : Int    = -1 // -1 is invalid means locally made
     
     @objc dynamic var firstName  : String? = nil
     @objc dynamic var lastName   : String? = nil

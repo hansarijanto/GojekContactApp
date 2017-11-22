@@ -8,12 +8,20 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UINavigationController {
+    
+    private let contactsVC: ContactsViewController = ContactsViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        ContactManager.shared.fetchContacts()
+        
+        ContactManager.shared.fetchContacts() // TODO: Move to contactsVC, and implement load view
+        
+        // set nav bar to be solid
+        self.navigationBar.isTranslucent = false
+        
+        // set initial root vc
+        self.pushViewController(self.contactsVC, animated: true)
     }
 
     override func didReceiveMemoryWarning() {

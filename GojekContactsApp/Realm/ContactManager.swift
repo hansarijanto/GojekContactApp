@@ -21,6 +21,7 @@ class ContactManager {
     static private let gojekBaseUrl: String             = "http://gojek-contacts-app.herokuapp.com"
     static private let gojekContactExtensionUrl: String = "/contacts.json"
     static private let didDownloadKey                   = "didDownloadGojekContactsKey"
+    static public let alphabet: [String]                = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"]
     
     private var isFetchingData: Bool = false
     
@@ -100,6 +101,14 @@ class ContactManager {
                         contact.apiId = apiId
                     }
                     
+                    if let mobile = personData["mobile"] as? String {
+                        contact.mobile = mobile
+                    }
+                    
+                    if let email = personData["email"] as? String {
+                        contact.email = email
+                    }
+                    
                     // added new contact to realm
                     if !self.saveNewContact(contact: contact) {
                         print("Failed to save contact after download to realm with id: \(contact.apiId)")
@@ -118,6 +127,70 @@ class ContactManager {
     public func contacts() -> [Contact] {
         let realm: Realm = try! Realm()
         return Array(realm.objects(Contact.self))
+    }
+    
+    // returns all contacts that are either favorites or not favorites
+    public func contacts(isFavorite: Bool) -> [Contact] {
+        let realm: Realm = try! Realm()
+        return Array(realm.objects(Contact.self).filter("isFavorite == \(isFavorite)"))
+    }
+    
+    private func sortContactsArr(contacts: [Contact]) -> [Contact] {
+        return contacts.sorted(by: {
+            if $0.firstName == nil {
+                return true
+            } else if $1.firstName == nil {
+                return false
+            }
+            
+            return $0.firstName! < $1.firstName!
+        })
+    }
+    
+    private func filterContactsArrByAlphabet(contacts: [Contact], alphabet: String) -> [Contact] {
+        return contacts.filter({
+            if let fn = $0.firstName, let firstCharacter = fn.first {
+                if alphabet == "#" {
+                    let sFC = String(firstCharacter)
+                    return sFC == "#" || !ContactManager.alphabet.contains(sFC)
+                } else {
+                    return firstCharacter == alphabet.first
+                }
+            }
+            
+            if alphabet == "#" {
+                return true
+            }
+            
+            return false
+        })
+    }
+    
+    // returns all contacts sorted by first name and and favorites being first, key is alphabet
+    public func contactsSorted() -> [String: [Contact]] {
+        // key here is the associated alphabet and the contacts are all contacts sorted by first name (favorites have priority)
+        var contactsDict: [String: [Contact]] = [String: [Contact]]()
+        
+        // query favorite and not favorite contacts from realm
+        var favoriteContacts    = self.contacts(isFavorite: true)
+        var notFavoriteContacts = self.contacts(isFavorite: false)
+        
+        // sort contacts by first name alphabetically
+        favoriteContacts    = self.sortContactsArr(contacts: favoriteContacts)
+        notFavoriteContacts = self.sortContactsArr(contacts: notFavoriteContacts)
+        
+        for key in ContactManager.alphabet {
+            
+            // filter contacts
+            var filteredContacts: [Contact] = self.filterContactsArrByAlphabet(contacts: favoriteContacts, alphabet: key)
+            
+            // now append filtered nonFavorite contacts
+            filteredContacts += self.filterContactsArrByAlphabet(contacts: notFavoriteContacts, alphabet: key)
+            
+            contactsDict[key] = filteredContacts
+        }
+        
+        return contactsDict
     }
     
     // saves a new contact into realm, returns true if successful

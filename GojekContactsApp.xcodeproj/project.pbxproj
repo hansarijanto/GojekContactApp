@@ -24,6 +24,7 @@
 		B838D3681FC43DD800A7FCE9 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */; };
 		B838D3691FC43DD800A7FCE9 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B838D36F1FC4432B00A7FCE9 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D36E1FC4432B00A7FCE9 /* Contact.swift */; };
+		B8D001941FC56DCC00D2516A /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D001931FC56DCC00D2516A /* ContactsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +88,7 @@
 		B838D3641FC43DD700A7FCE9 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
 		B838D36E1FC4432B00A7FCE9 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		B8D001931FC56DCC00D2516A /* ContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +169,7 @@
 				B80AA46C1FC46FC800286B80 /* PureLayout */,
 				B80AA4591FC4616E00286B80 /* HTTP */,
 				B838D36D1FC4416100A7FCE9 /* Realm */,
+				B8D001921FC56DAA00D2516A /* Contacts */,
 				B838D3211FC4326000A7FCE9 /* AppDelegate.swift */,
 				B838D3231FC4326000A7FCE9 /* ViewController.swift */,
 				B838D3251FC4326000A7FCE9 /* Main.storyboard */,
@@ -212,6 +215,14 @@
 				B838D36E1FC4432B00A7FCE9 /* Contact.swift */,
 			);
 			path = Realm;
+			sourceTree = "<group>";
+		};
+		B8D001921FC56DAA00D2516A /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				B8D001931FC56DCC00D2516A /* ContactsViewController.swift */,
+			);
+			name = Contacts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -371,6 +382,7 @@
 				B80AA45B1FC4619500286B80 /* HTTPManager.swift in Sources */,
 				B80AA46A1FC46F8300286B80 /* ALView+PureLayout.m in Sources */,
 				B80AA46B1FC46F8300286B80 /* NSArray+PureLayout.m in Sources */,
+				B8D001941FC56DCC00D2516A /* ContactsViewController.swift in Sources */,
 				B838D3221FC4326000A7FCE9 /* AppDelegate.swift in Sources */,
 				B80AA46F1FC4710100286B80 /* ContactManager.swift in Sources */,
 				B80AA4691FC46F8300286B80 /* NSLayoutConstraint+PureLayout.m in Sources */,
