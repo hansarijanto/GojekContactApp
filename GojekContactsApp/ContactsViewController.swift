@@ -22,6 +22,9 @@ class ContactsViewController: UIViewController {
     // table view
     private let tableView : UITableView = UITableView()
     
+    // sizes
+    public let rowHeight : CGFloat = 64.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -34,6 +37,7 @@ class ContactsViewController: UIViewController {
         self.title = self.navBarTitle
         self.view.backgroundColor = self.backgroundColor
         
+        self.tableView.register(ContactTableCellView.self, forCellReuseIdentifier: "ContactCell")
         self.tableView.delegate   = self
         self.tableView.dataSource = self
         self.tableView.backgroundColor = self.backgroundColor
@@ -45,15 +49,29 @@ class ContactsViewController: UIViewController {
 
 // MARK: Table View Extension
 extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return self.rowHeight
+    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "ContactCell") as! ContactTableCellView
         let alphabet = self.contactsSections[indexPath.section]
         
 
         if let contacts = self.contactsDict[alphabet] {
             let contact = contacts[indexPath.row]
-            cell.textLabel?.text = contact.firstName
+            
+            // load product image
+            if let contactImage = ContactManager.shared.loadContactImage(contact: contact) {
+                DispatchQueue.main.async {
+                    cell.contactImage.image = contactImage
+                }
+            }
+            
+            DispatchQueue.main.async {
+                cell.nameTitleLabel.text = "\(contact.firstName!) \(contact.lastName!)"
+            }
         }
         
         return cell

@@ -23,7 +23,8 @@ class ContactManager {
     static private let didDownloadKey                   = "didDownloadGojekContactsKey"
     static public let alphabet: [String]                = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"]
     
-    private var isFetchingData: Bool = false
+    private let contactImageFolderURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first! // url of where we save contact images downloaded to
+    private var isFetchingData: Bool  = false
     
     public weak var delegate: ContactManagerDelegate? = nil
     
@@ -85,12 +86,17 @@ class ContactManager {
                         contact.lastName  = lastName
                     }
                     
-                    if var imgUrl = personData["profile_pic"] as? String {
-                        // completing the url for missing images
-                        if imgUrl == "/images/missing.png" {
-                            imgUrl = ContactManager.gojekBaseUrl + imgUrl
+                    if let imgUrl = personData["profile_pic"] as? String {
+                        // if url is missing then we set it to default
+                        if imgUrl != "/images/missing.png" {
+                            // download image
+                            if let apiId = personData["id"] as? Int {
+                                let filename = "\(apiId).png"
+                                if self.downloadImage(stringUrl: imgUrl, filename: filename) {
+                                    contact.imageFileName = filename
+                                }
+                            }
                         }
-                        contact.imgUrl = imgUrl
                     }
                     
                     if let isFavorite = personData["favorite"] as? Bool {
@@ -121,6 +127,36 @@ class ContactManager {
                 self.delegate?.didDownloadContacts() // callback for delegate
             }
         })
+    }
+    
+    // donwload contact image to a designated
+    public func downloadImage(stringUrl: String, filename: String) -> Bool {
+        if let url = URL(string: stringUrl) {
+            do {
+                let data = try Data(contentsOf: url)
+                if let image = UIImage(data : data), let pngImageData = UIImagePNGRepresentation(image) {
+                    let fileURL = self.contactImageFolderURL.appendingPathComponent(filename)
+                    try pngImageData.write(to: fileURL, options: .atomic)
+                }
+                return true
+            } catch {
+                return false
+            }
+        } else {
+            return false
+        }
+    }
+    
+    // load contact image given a contact
+    public func loadContactImage(contact: Contact) -> UIImage? {
+        if let fn = contact.imageFileName {
+            let filePath = self.contactImageFolderURL.appendingPathComponent(fn).path
+            if FileManager.default.fileExists(atPath: filePath) {
+                return UIImage(contentsOfFile: filePath)
+            }
+        }
+        
+        return nil
     }
     
     // returns all contact from realm

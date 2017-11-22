@@ -25,6 +25,7 @@
 		B838D3691FC43DD800A7FCE9 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B838D36F1FC4432B00A7FCE9 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D36E1FC4432B00A7FCE9 /* Contact.swift */; };
 		B8D001941FC56DCC00D2516A /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D001931FC56DCC00D2516A /* ContactsViewController.swift */; };
+		B8D001961FC5E7CA00D2516A /* ContactTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D001951FC5E7CA00D2516A /* ContactTableCellView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
 		B838D36E1FC4432B00A7FCE9 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		B8D001931FC56DCC00D2516A /* ContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
+		B8D001951FC5E7CA00D2516A /* ContactTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableCellView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				B8D001931FC56DCC00D2516A /* ContactsViewController.swift */,
+				B8D001951FC5E7CA00D2516A /* ContactTableCellView.swift */,
 			);
 			name = Contacts;
 			sourceTree = "<group>";
@@ -383,6 +386,7 @@
 				B80AA46A1FC46F8300286B80 /* ALView+PureLayout.m in Sources */,
 				B80AA46B1FC46F8300286B80 /* NSArray+PureLayout.m in Sources */,
 				B8D001941FC56DCC00D2516A /* ContactsViewController.swift in Sources */,
+				B8D001961FC5E7CA00D2516A /* ContactTableCellView.swift in Sources */,
 				B838D3221FC4326000A7FCE9 /* AppDelegate.swift in Sources */,
 				B80AA46F1FC4710100286B80 /* ContactManager.swift in Sources */,
 				B80AA4691FC46F8300286B80 /* NSLayoutConstraint+PureLayout.m in Sources */,
