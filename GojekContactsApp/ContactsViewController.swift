@@ -22,11 +22,18 @@ class ContactsViewController: UIViewController, ContactManagerDelegate {
     // ui elements
     private let tableView      : UITableView             = UITableView()
     private let alphabetsLabel : UILabel                 = UILabel()
+    
+    private let fadeViewLabel  : UILabel                 = UILabel()
     private let activityView   : UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     private let fadeView       : UIView                  = UIView()
     
-    // sizes
-    public let rowHeight : CGFloat = 64.0
+    private let downloadFailureAlert : UIAlertController = UIAlertController(title: "Failed to Download Contacts", message: nil, preferredStyle: .alert)
+    
+    // ui params
+    public  let rowHeight              : CGFloat = 64.0
+    private let fadeViewLabelFont      : UIFont  = UIFont.systemFont(ofSize: 18.0, weight: UIFont.Weight.bold)
+    private let fadeViewLabelText      : String  = "Downloading Contacts"
+    private let fadeViewLabelTextColor : UIColor = .white
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,14 +62,34 @@ class ContactsViewController: UIViewController, ContactManagerDelegate {
         self.fadeView.isHidden = true
         self.view.addSubview(fadeView)
         
-        self.view.addSubview(self.activityView)
+        self.fadeView.addSubview(self.activityView)
         self.activityView.hidesWhenStopped = true
-        self.activityView.center = self.view.center
+        self.activityView.autoAlignAxis(toSuperviewAxis: .vertical)
+        self.activityView.autoAlignAxis(toSuperviewAxis: .horizontal)
+        
+        self.fadeView.addSubview(self.fadeViewLabel)
+        self.fadeViewLabel.autoSetDimension(.height, toSize: 20.0)
+        self.fadeViewLabel.autoPinEdge(toSuperviewEdge: .left)
+        self.fadeViewLabel.autoPinEdge(toSuperviewEdge: .right)
+        self.fadeViewLabel.autoPinEdge(.bottom, to: .top, of: self.activityView, withOffset: -30.0)
+        self.fadeViewLabel.text = self.fadeViewLabelText
+        self.fadeViewLabel.font = self.fadeViewLabelFont
+        self.fadeViewLabel.textColor = self.fadeViewLabelTextColor
+        self.fadeViewLabel.textAlignment = .center
+        
+        // setup failure alert
+        let okAction = UIAlertAction(title: "Yes", style: .default, handler: { action in
+            ContactManager.shared.fetchContacts()
+        })
+        let cancelAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        self.downloadFailureAlert.addAction(okAction)
+        self.downloadFailureAlert.addAction(cancelAction)
         
         // subscribe to contact manager
         ContactManager.shared.delegate = self
         // try to fetch contacts from Gojek
         ContactManager.shared.fetchContacts()
+        
     }
     
     private func reloadData() {
@@ -88,13 +115,35 @@ class ContactsViewController: UIViewController, ContactManagerDelegate {
     }
     
     //MARK: Contact Manager Delegate
-    func didDownloadContacts(success: Bool) {
-        self.reloadData()
+    func didDownloadContacts() {
+            self.reloadData()
+            self.hideLoadingUI()
+    }
+    
+    func didFailToDownloadContactsNoResponse() {
         self.hideLoadingUI()
+        DispatchQueue.main.async {
+            self.downloadFailureAlert.message = "Please check your internet connection. Would you like to try again?"
+            self.present(self.downloadFailureAlert, animated: true, completion: nil)
+        }
+    }
+    
+    func didFailToDownloadContactsEmptyResponse() {
+        self.hideLoadingUI()
+        DispatchQueue.main.async {
+            self.downloadFailureAlert.message = "We found 0 contacts. Would you like to try again?"
+            self.present(self.downloadFailureAlert, animated: true, completion: nil)
+        }
     }
     
     func didStartDownload() {
         self.showLoadingUI()
+    }
+    
+    func didDownloadContactsProgress(progress: Float) {
+        DispatchQueue.main.async {
+            self.fadeViewLabel.text = "\(self.fadeViewLabelText) (\(round(progress*1000.0)/10.0)%)"
+        }
     }
 }
 

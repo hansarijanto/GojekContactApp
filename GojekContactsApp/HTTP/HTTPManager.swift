@@ -20,15 +20,13 @@ class HTTPManager {
     static let shared: HTTPManager = HTTPManager()
     
     // get request, run synchronously for threading simplicity
-    public func get(urlString: String, completionBlock: ((Data) -> Void)?) {
+    public func get(urlString: String, completionBlock: ((Data?) -> Void)?) {
         
         let url = URL(string: urlString)
         if let usableUrl = url {
             let request = URLRequest(url: usableUrl)
             let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
-                if let data = data {
-                    completionBlock?(data)
-                }
+                completionBlock?(data)
             })
             task.resume()
         }

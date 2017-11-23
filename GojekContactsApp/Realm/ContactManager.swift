@@ -11,8 +11,11 @@ import RealmSwift
 
 protocol ContactManagerDelegate: class {
     // TODO: Can make didDownloadContacts more descriptive by providing reason for failure
-    func didDownloadContacts(success: Bool) // called when the manager has completed downloading all the contacts and has saved them to Realm
-    func didStartDownload()                 // called when the manager has started downloading contacts
+    func didDownloadContacts()                        // called when the manager has completed downloading all the contacts and has saved them to Realm
+    func didFailToDownloadContactsNoResponse()        // failure when no response from api (most likely no internet connection or api down)
+    func didFailToDownloadContactsEmptyResponse()     // failure when a response has no data
+    func didDownloadContactsProgress(progress: Float) // called when the manager has started downloading contacts
+    func didStartDownload()                           // called when the manager has started downloading contacts
 }
 
 class ContactManager {
@@ -66,17 +69,26 @@ class ContactManager {
         
         // call gojek api
         let url = ContactManager.gojekBaseUrl + ContactManager.gojekContactExtensionUrl
-        HTTPManager.shared.get(urlString: url, completionBlock: {(data: Data) -> Void in
-            if let strongSelf = weakSelf {
+        HTTPManager.shared.get(urlString: url, completionBlock: {(data: Data?) -> Void in
+            
+            if let d = data, let strongSelf = weakSelf {
                 var dataArr: [[String: Any]] = [[String: Any]]()
                 
                 // format contacts data to json
                 do {
-                    dataArr = try JSONSerialization.jsonObject(with: data, options: []) as! [[String: Any]]
+                    dataArr = try JSONSerialization.jsonObject(with: d, options: []) as! [[String: Any]]
                 } catch {
                     print(error.localizedDescription)
                 }
                 
+                // empty data
+                if dataArr.count == 0 {
+                    self.isFetchingData = false
+                    self.delegate?.didFailToDownloadContactsEmptyResponse() // failure due to empty data
+                    return
+                }
+                
+                var count: Float = 0.0
                 // loop through json array of contacts data
                 for personData in dataArr {
                     
@@ -124,14 +136,20 @@ class ContactManager {
                         print("Failed to save contact after download to realm with id: \(contact.apiId)")
                     }
                     
+                    count += 1.0
+                    let progress = count / Float(dataArr.count)
+                    self.delegate?.didDownloadContactsProgress(progress: progress)
                 }
                 
                 UserDefaults.standard.set(true, forKey: ContactManager.didDownloadKey)
                 strongSelf.isFetchingData = false
-                self.delegate?.didDownloadContacts(success: true) // callback for delegate
+                self.delegate?.didDownloadContacts() // callback for delegate
             } else {
-                self.delegate?.didDownloadContacts(success: false)
+                // failure due to no data/no internet connection
+                self.isFetchingData = false
+                self.delegate?.didFailToDownloadContactsNoResponse() // callback for delegate
             }
+
         })
     }
     
