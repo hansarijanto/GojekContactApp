@@ -14,8 +14,30 @@ enum ContactDetailViewControllerMode {
 }
 
 class ContactDetailViewController: UIViewController {
-    private(set) var mode: ContactDetailViewControllerMode = .view
-    private(set) var contact: Contact
+    // defining params
+    private(set) var mode    : ContactDetailViewControllerMode = .view
+    private(set) var contact : Contact
+    
+    // header elments
+    private let headerView       : UIView      = UIView()
+    private let profileImageView : UIImageView = UIImageView()
+    private let nameLabel        : UILabel     = UILabel()
+    
+    // TODO: Create custom button UIView
+    private let messageButton    : UIButton    = UIButton()
+    private let callButton       : UIButton    = UIButton()
+    private let emailButton      : UIButton    = UIButton()
+    private let favoriteButton   : UIButton    = UIButton()
+    private let messageLabel     : UILabel     = UILabel()
+    private let callLabel        : UILabel     = UILabel()
+    private let emailLabel       : UILabel     = UILabel()
+    private let favoriteLabel    : UILabel     = UILabel()
+    
+    // TODO: Create custome for fields UIView
+    private let firstNameEditableLabel : UITextField = UITextField()
+    private let lastNameEditableLabel  : UITextField = UITextField()
+    private let emailEditableLabel     : UITextField = UITextField()
+    private let mobileEditableLabel    : UITextField = UITextField()
     
     init(contact: Contact) {
         self.contact = contact
