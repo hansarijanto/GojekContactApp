@@ -9,8 +9,6 @@
 import UIKit
 
 class ContactsViewController: UIViewController, ContactManagerDelegate {
-    private let navBarTitle       : String  = "Contacts"     // bar title (Contacts)
-    private let backgroundColor   : UIColor = UIColor.white // background color (white)
     
     // contacts/table data
     // the table view data assumes the following, contactsDict is pre sorted
@@ -30,6 +28,8 @@ class ContactsViewController: UIViewController, ContactManagerDelegate {
     private let downloadFailureAlert : UIAlertController = UIAlertController(title: "Failed to Download Contacts", message: nil, preferredStyle: .alert)
     
     // ui params
+    private let navBarTitle            : String  = "Contacts"     // bar title (Contacts)
+    private let backgroundColor        : UIColor = UIColor(red: 249.0/255.0, green: 249.0/255.0, blue: 249.0/255.0, alpha: 1.0) // background color (light gray)
     public  let rowHeight              : CGFloat = 64.0
     private let fadeViewLabelFont      : UIFont  = UIFont.systemFont(ofSize: 18.0, weight: UIFont.Weight.bold)
     private let fadeViewLabelText      : String  = "Downloading Contacts"
