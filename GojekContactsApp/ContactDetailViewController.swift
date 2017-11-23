@@ -13,6 +13,14 @@ enum ContactDetailViewControllerMode {
     case edit
 }
 
+class ContactDetailIconButton: UIButton {
+    
+}
+
+class ContactDetailEditableLabel: UIView {
+    
+}
+
 class ContactDetailViewController: UIViewController {
     // defining params
     private(set) var mode    : ContactDetailViewControllerMode = .view
@@ -24,20 +32,20 @@ class ContactDetailViewController: UIViewController {
     private let nameLabel        : UILabel     = UILabel()
     
     // TODO: Create custom button UIView
-    private let messageButton    : UIButton    = UIButton()
-    private let callButton       : UIButton    = UIButton()
-    private let emailButton      : UIButton    = UIButton()
-    private let favoriteButton   : UIButton    = UIButton()
+    private let messageButton    : ContactDetailIconButton    = ContactDetailIconButton()
+    private let callButton       : ContactDetailIconButton    = ContactDetailIconButton()
+    private let emailButton      : ContactDetailIconButton    = ContactDetailIconButton()
+    private let favoriteButton   : ContactDetailIconButton    = ContactDetailIconButton()
     private let messageLabel     : UILabel     = UILabel()
     private let callLabel        : UILabel     = UILabel()
     private let emailLabel       : UILabel     = UILabel()
     private let favoriteLabel    : UILabel     = UILabel()
     
     // TODO: Create custome for fields UIView
-    private let firstNameEditableLabel : UITextField = UITextField()
-    private let lastNameEditableLabel  : UITextField = UITextField()
-    private let emailEditableLabel     : UITextField = UITextField()
-    private let mobileEditableLabel    : UITextField = UITextField()
+    private let firstNameEditableLabel : ContactDetailEditableLabel = ContactDetailEditableLabel()
+    private let lastNameEditableLabel  : ContactDetailEditableLabel = ContactDetailEditableLabel()
+    private let emailEditableLabel     : ContactDetailEditableLabel = ContactDetailEditableLabel()
+    private let mobileEditableLabel    : ContactDetailEditableLabel = ContactDetailEditableLabel()
     
     init(contact: Contact) {
         self.contact = contact

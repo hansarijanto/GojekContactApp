@@ -48,6 +48,7 @@ class ContactsViewController: UIViewController, ContactManagerDelegate {
         self.view.backgroundColor = self.backgroundColor
         
         // setup table view
+        self.tableView.contentInsetAdjustmentBehavior = .never // prevent odd animation of table view cells when pushing VC
         self.tableView.register(ContactTableCellView.self, forCellReuseIdentifier: "ContactCell")
         self.tableView.delegate   = self
         self.tableView.dataSource = self
@@ -197,7 +198,14 @@ extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
     
     // MARK: Table View Delegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        return
+        self.tableView.deselectRow(at: indexPath, animated: true)
+        let alphabet = self.contactsSections[indexPath.section]
+
+        if let contacts = self.contactsDict[alphabet] {
+            let contact = contacts[indexPath.row]
+            let contactDetailVC = ContactDetailViewController(contact: contact)
+            self.navigationController?.pushViewController(contactDetailVC, animated: true)
+        }
     }
 }
 
