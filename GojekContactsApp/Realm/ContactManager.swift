@@ -10,7 +10,9 @@ import Foundation
 import RealmSwift
 
 protocol ContactManagerDelegate: class {
-    func didDownloadContacts() // called when the manager has completed downloading all the contacts and has saved them to Realm
+    // TODO: Can make didDownloadContacts more descriptive by providing reason for failure
+    func didDownloadContacts(success: Bool) // called when the manager has completed downloading all the contacts and has saved them to Realm
+    func didStartDownload()                 // called when the manager has started downloading contacts
 }
 
 class ContactManager {
@@ -56,6 +58,8 @@ class ContactManager {
         if self.didDownloadGojekContacts() || self.isFetchingData {
             return
         }
+        
+        self.delegate?.didStartDownload()
         
         self.isFetchingData = true
         weak var weakSelf   = self
@@ -124,7 +128,9 @@ class ContactManager {
                 
                 UserDefaults.standard.set(true, forKey: ContactManager.didDownloadKey)
                 strongSelf.isFetchingData = false
-                self.delegate?.didDownloadContacts() // callback for delegate
+                self.delegate?.didDownloadContacts(success: true) // callback for delegate
+            } else {
+                self.delegate?.didDownloadContacts(success: false)
             }
         })
     }

@@ -15,8 +15,6 @@ class ViewController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ContactManager.shared.fetchContacts() // TODO: Move to contactsVC, and implement load view
-        
         // set nav bar to be solid
         self.navigationBar.isTranslucent = false
         

@@ -8,8 +8,8 @@
 
 import UIKit
 
-class ContactsViewController: UIViewController {
-    private let navBarTitle       : String = "Contacts"     // bar title (Contacts)
+class ContactsViewController: UIViewController, ContactManagerDelegate {
+    private let navBarTitle       : String  = "Contacts"     // bar title (Contacts)
     private let backgroundColor   : UIColor = UIColor.white // background color (white)
     
     // contacts/table data
@@ -17,10 +17,13 @@ class ContactsViewController: UIViewController {
     // contact section represent the title of the tbale sections
     // the contactsDict are keyed by it's prespective elements of contactsSection (alphabets in this instance)
     private(set) var contactsDict     : [String: [Contact]]  = [String: [Contact]]() // key is alphabet, value are contacts associated to tht alphabet
-    private(set) var contactsSections : [String] = [String]()
+    private(set) var contactsSections : [String]             = [String]()
     
-    // table view
-    private let tableView : UITableView = UITableView()
+    // ui elements
+    private let tableView      : UITableView             = UITableView()
+    private let alphabetsLabel : UILabel                 = UILabel()
+    private let activityView   : UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    private let fadeView       : UIView                  = UIView()
     
     // sizes
     public let rowHeight : CGFloat = 64.0
@@ -37,14 +40,62 @@ class ContactsViewController: UIViewController {
         self.title = self.navBarTitle
         self.view.backgroundColor = self.backgroundColor
         
+        // setup table view
         self.tableView.register(ContactTableCellView.self, forCellReuseIdentifier: "ContactCell")
         self.tableView.delegate   = self
         self.tableView.dataSource = self
         self.tableView.backgroundColor = self.backgroundColor
         self.view.addSubview(self.tableView)
         self.tableView.autoPinEdgesToSuperviewEdges()
+        
+        // setup loading view
+        self.fadeView.frame = self.view.frame
+        self.fadeView.backgroundColor = UIColor.black
+        self.fadeView.alpha = 0.3
+        self.fadeView.isHidden = true
+        self.view.addSubview(fadeView)
+        
+        self.view.addSubview(self.activityView)
+        self.activityView.hidesWhenStopped = true
+        self.activityView.center = self.view.center
+        
+        // subscribe to contact manager
+        ContactManager.shared.delegate = self
+        // try to fetch contacts from Gojek
+        ContactManager.shared.fetchContacts()
     }
     
+    private func reloadData() {
+        DispatchQueue.main.async {
+            self.contactsDict = ContactManager.shared.contactsSorted()
+            self.tableView.reloadData()
+        }
+    }
+    
+    // MARK: Loading view functions
+    private func showLoadingUI() {
+        DispatchQueue.main.async {
+            self.fadeView.isHidden = false
+            self.activityView.startAnimating()
+        }
+    }
+    
+    private func hideLoadingUI() {
+        DispatchQueue.main.async {
+            self.fadeView.isHidden = true
+            self.activityView.stopAnimating()
+        }
+    }
+    
+    //MARK: Contact Manager Delegate
+    func didDownloadContacts(success: Bool) {
+        self.reloadData()
+        self.hideLoadingUI()
+    }
+    
+    func didStartDownload() {
+        self.showLoadingUI()
+    }
 }
 
 // MARK: Table View Extension
@@ -64,11 +115,14 @@ extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
             
             // load product image
             if let contactImage = ContactManager.shared.loadContactImage(contact: contact) {
-                cell.contactImageView.image     = contactImage
+                DispatchQueue.main.async {
+                    cell.contactImageView.image = contactImage
+                }
             }
-            
-            cell.favoriteImageView.isHidden = !contact.isFavorite
-            cell.nameTitleLabel.text = "\(contact.firstName!) \(contact.lastName!)"
+            DispatchQueue.main.async {
+                cell.favoriteImageView.isHidden = !contact.isFavorite
+                cell.nameTitleLabel.text = "\(contact.firstName!) \(contact.lastName!)"
+            }
         }
         
         return cell
