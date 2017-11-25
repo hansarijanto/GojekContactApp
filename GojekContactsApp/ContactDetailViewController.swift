@@ -15,18 +15,16 @@ enum ContactDetailViewControllerMode {
 
 class ContactDetailIconButton: UIButton {
     
-    private let lightGreen    : UIColor     = UIColor(red: 80.0/255.0, green: 227.0/255.0, blue: 194.0/255.0, alpha: 1.0)
     public  let iconImageView : UIImageView = UIImageView()
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.backgroundColor = lightGreen
         self.layer.cornerRadius = frame.size.width / 2.0
         
         self.addSubview(self.iconImageView)
         self.iconImageView.isUserInteractionEnabled = false
-        let inset = self.bounds.size.width / 4.0
+        let inset = self.bounds.size.width / 3.7
         self.iconImageView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset))
         self.iconImageView.image = self.iconImageView.image?.withRenderingMode(.alwaysTemplate)
         self.iconImageView.tintColor = .white
@@ -132,12 +130,46 @@ class ContactDetailViewController: UIViewController {
         self.nameLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .bold)
         self.nameLabel.textColor = UIColor(red: 60.0/255.0, green: 60.0/255.0, blue: 60.0/255.0, alpha: 1.0)
         
+        // icon params
+        let iconWidth: CGFloat        = 44.0
+        let iconSpacing: CGFloat      = 36.0
+        let iconBottomMargin: CGFloat = 32.0
+        let iconSideMargin: CGFloat   = (UIScreen.main.bounds.width - (3.0 * iconSpacing) - (4.0 * iconWidth)) / 2.0
+        
+        // constraint icons
         self.headerView.addSubview(self.messageButton)
-        let iconWidth = 44.0
-        self.messageButton.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: -32.0)
-        self.messageButton.autoPinEdge(.left, to: .left, of: self.headerView, withOffset: 44.0)
+        self.messageButton.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconBottomMargin * -1.0)
+        self.messageButton.autoPinEdge(.left, to: .left, of: self.headerView, withOffset: iconSideMargin)
         self.messageButton.autoSetDimensions(to: CGSize(width: iconWidth, height: iconWidth))
         self.messageButton.iconImageView.image = UIImage(named: "speechBubble")
+        self.messageButton.backgroundColor = self.lightGreen
+        
+        self.headerView.addSubview(self.callButton)
+        self.callButton.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconBottomMargin * -1.0)
+        self.callButton.autoPinEdge(.left, to: .right, of: self.messageButton, withOffset: iconSpacing)
+        self.callButton.autoSetDimensions(to: CGSize(width: iconWidth, height: iconWidth))
+        self.callButton.iconImageView.image = UIImage(named: "phone")
+        self.callButton.backgroundColor = self.lightGreen
+        
+        self.headerView.addSubview(self.emailButton)
+        self.emailButton.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconBottomMargin * -1.0)
+        self.emailButton.autoPinEdge(.left, to: .right, of: self.callButton, withOffset: iconSpacing)
+        self.emailButton.autoSetDimensions(to: CGSize(width: iconWidth, height: iconWidth))
+        self.emailButton.iconImageView.image = UIImage(named: "mail")
+        self.emailButton.backgroundColor = self.lightGreen
+        
+        self.headerView.addSubview(self.favoriteButton)
+        self.favoriteButton.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconBottomMargin * -1.0)
+        self.favoriteButton.autoPinEdge(.left, to: .right, of: self.emailButton, withOffset: iconSpacing)
+        self.favoriteButton.autoSetDimensions(to: CGSize(width: iconWidth, height: iconWidth))
+        self.favoriteButton.iconImageView.image = UIImage(named: "star")
+        self.favoriteButton.backgroundColor = self.lightGreen
+        
+        // register touch for icons
+        self.messageButton.addTarget(self, action: #selector(ContactDetailViewController.didTapMessageIcon), for: .touchUpInside)
+        self.callButton.addTarget(self, action: #selector(ContactDetailViewController.didTapCallIcon), for: .touchUpInside)
+        self.emailButton.addTarget(self, action: #selector(ContactDetailViewController.didTapEmailIcon), for: .touchUpInside)
+        self.favoriteButton.addTarget(self, action: #selector(ContactDetailViewController.didTapFavoriteIcon), for: .touchUpInside)
         
         var name = ""
         if let fn = self.contact.firstName {
@@ -153,5 +185,22 @@ class ContactDetailViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.gradient.frame = self.headerView.bounds
+    }
+    
+    // MARK: Icon Touch Callbacks
+    @objc public func didTapMessageIcon() {
+        print("tap message icon")
+    }
+    
+    @objc public func didTapCallIcon() {
+        print("tap call icon")
+    }
+    
+    @objc public func didTapEmailIcon() {
+        print("tap email icon")
+    }
+    
+    @objc public func didTapFavoriteIcon() {
+        print("tap favorite icon")
     }
 }
