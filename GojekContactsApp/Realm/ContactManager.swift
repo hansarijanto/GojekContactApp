@@ -9,13 +9,13 @@
 import Foundation
 import RealmSwift
 
-protocol ContactManagerDelegate: class {
+@objc protocol ContactManagerDelegate: class {
     // TODO: Can make didDownloadContacts more descriptive by providing reason for failure
-    func didDownloadContacts()                        // called when the manager has completed downloading all the contacts and has saved them to Realm
-    func didFailToDownloadContactsNoResponse()        // failure when no response from api (most likely no internet connection or api down)
-    func didFailToDownloadContactsEmptyResponse()     // failure when a response has no data
-    func didDownloadContactsProgress(progress: Float) // called when the manager has is downloading contacts
-    func didStartDownload()                           // called when the manager has started downloading contacts
+    @objc optional func didDownloadContacts()                        // called when the manager has completed downloading all the contacts and has saved them to Realm
+    @objc optional func didFailToDownloadContactsNoResponse()        // failure when no response from api (most likely no internet connection or api down)
+    @objc optional func didFailToDownloadContactsEmptyResponse()     // failure when a response has no data
+    @objc optional func didDownloadContactsProgress(progress: Float) // called when the manager has is downloading contacts
+    @objc optional func didStartDownload()                           // called when the manager has started downloading contacts
 }
 
 class ContactManager {
@@ -54,6 +54,10 @@ class ContactManager {
         Realm.Configuration.defaultConfiguration = config
     }
     
+    static public func gojekUrl() -> String {
+        return ContactManager.gojekBaseUrl + ContactManager.gojekContactExtensionUrl
+    }
+    
     // grabs all contacts from the gojek API
     public func fetchContacts() {
         
@@ -62,13 +66,13 @@ class ContactManager {
             return
         }
         
-        self.delegate?.didStartDownload()
+        self.delegate?.didStartDownload?()
         
         self.isFetchingData = true
         weak var weakSelf   = self
         
         // call gojek api
-        let url = ContactManager.gojekBaseUrl + ContactManager.gojekContactExtensionUrl
+        let url = ContactManager.gojekUrl()
         HTTPManager.shared.get(urlString: url, completionBlock: {(data: Data?) -> Void in
             
             if let d = data, let strongSelf = weakSelf {
@@ -84,7 +88,7 @@ class ContactManager {
                 // empty data
                 if dataArr.count == 0 {
                     self.isFetchingData = false
-                    self.delegate?.didFailToDownloadContactsEmptyResponse() // failure due to empty data
+                    self.delegate?.didFailToDownloadContactsEmptyResponse?() // failure due to empty data
                     return
                 }
                 
@@ -133,16 +137,16 @@ class ContactManager {
                     
                     count += 1.0
                     let progress = count / Float(dataArr.count)
-                    self.delegate?.didDownloadContactsProgress(progress: progress)
+                    self.delegate?.didDownloadContactsProgress?(progress: progress)
                 }
                 
                 UserDefaults.standard.set(true, forKey: ContactManager.didDownloadKey)
                 strongSelf.isFetchingData = false
-                self.delegate?.didDownloadContacts() // callback for delegate
+                self.delegate?.didDownloadContacts?() // callback for delegate
             } else {
                 // failure due to no data/no internet connection
                 self.isFetchingData = false
-                self.delegate?.didFailToDownloadContactsNoResponse() // callback for delegate
+                self.delegate?.didFailToDownloadContactsNoResponse?() // callback for delegate
             }
 
         })
@@ -250,6 +254,15 @@ class ContactManager {
     
     public func didDownloadGojekContacts() -> Bool {
         return UserDefaults.standard.bool(forKey: ContactManager.didDownloadKey)
+    }
+    
+    // delate all contacts
+    public func deleteAllContacts() {
+        let realm = try! Realm()
+        try! realm.write {
+            realm.deleteAll()
+            UserDefaults.standard.set(nil, forKey: ContactManager.didDownloadKey)
+        }
     }
 }
 

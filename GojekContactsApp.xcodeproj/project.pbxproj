@@ -15,6 +15,7 @@
 		B835F8B31FCA02D1005641B2 /* DSCameraHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B835F8B21FCA02D1005641B2 /* DSCameraHandler.swift */; };
 		B835F8B51FCA10B9005641B2 /* ContactDetailsTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B835F8B41FCA10B9005641B2 /* ContactDetailsTableCellView.swift */; };
 		B835F8B91FCA10F6005641B2 /* ContactDetailsIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B835F8B81FCA10F6005641B2 /* ContactDetailsIconButton.swift */; };
+		B835F8BB1FCA140A005641B2 /* DownloadContactsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B835F8BA1FCA140A005641B2 /* DownloadContactsTest.swift */; };
 		B838D3221FC4326000A7FCE9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D3211FC4326000A7FCE9 /* AppDelegate.swift */; };
 		B838D3241FC4326000A7FCE9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D3231FC4326000A7FCE9 /* ViewController.swift */; };
 		B838D3271FC4326000A7FCE9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B838D3251FC4326000A7FCE9 /* Main.storyboard */; };
@@ -24,7 +25,7 @@
 		B838D3421FC4326000A7FCE9 /* GojekContactsAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D3411FC4326000A7FCE9 /* GojekContactsAppUITests.swift */; };
 		B838D3661FC43DD800A7FCE9 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3641FC43DD700A7FCE9 /* Realm.framework */; };
 		B838D3671FC43DD800A7FCE9 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3641FC43DD700A7FCE9 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		B838D3681FC43DD800A7FCE9 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */; };
+		B838D3681FC43DD800A7FCE9 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		B838D3691FC43DD800A7FCE9 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B838D36F1FC4432B00A7FCE9 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D36E1FC4432B00A7FCE9 /* Contact.swift */; };
 		B89FD29D1FC6CB590092D8B6 /* ContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89FD29C1FC6CB590092D8B6 /* ContactDetailViewController.swift */; };
@@ -80,6 +81,7 @@
 		B835F8B21FCA02D1005641B2 /* DSCameraHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DSCameraHandler.swift; path = GojekContactsApp/DSCameraHandler.swift; sourceTree = "<group>"; };
 		B835F8B41FCA10B9005641B2 /* ContactDetailsTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailsTableCellView.swift; sourceTree = "<group>"; };
 		B835F8B81FCA10F6005641B2 /* ContactDetailsIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailsIconButton.swift; sourceTree = "<group>"; };
+		B835F8BA1FCA140A005641B2 /* DownloadContactsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadContactsTest.swift; sourceTree = "<group>"; };
 		B838D31E1FC4326000A7FCE9 /* GojekContactsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GojekContactsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B838D3211FC4326000A7FCE9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B838D3231FC4326000A7FCE9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 		B838D3351FC4326000A7FCE9 /* GojekContactsAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				B835F8BA1FCA140A005641B2 /* DownloadContactsTest.swift */,
 				B838D3361FC4326000A7FCE9 /* GojekContactsAppTests.swift */,
 				B838D3381FC4326000A7FCE9 /* Info.plist */,
 			);
@@ -413,6 +416,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B835F8BB1FCA140A005641B2 /* DownloadContactsTest.swift in Sources */,
 				B838D3371FC4326000A7FCE9 /* GojekContactsAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -616,6 +620,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3MB236BUTU;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/GojekContactsApp",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = GojekContactsAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = hansarijanto.GojekContactsAppTests;
@@ -633,6 +642,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3MB236BUTU;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/GojekContactsApp",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = GojekContactsAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = hansarijanto.GojekContactsAppTests;
@@ -649,6 +663,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3MB236BUTU;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/GojekContactsApp",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = GojekContactsAppUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = hansarijanto.GojekContactsAppUITests;
@@ -665,6 +684,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3MB236BUTU;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/GojekContactsApp",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = GojekContactsAppUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = hansarijanto.GojekContactsAppUITests;
