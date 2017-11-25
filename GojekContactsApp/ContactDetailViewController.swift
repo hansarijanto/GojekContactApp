@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 enum ContactDetailViewControllerMode {
     case view
@@ -26,8 +27,6 @@ class ContactDetailIconButton: UIButton {
         self.iconImageView.isUserInteractionEnabled = false
         let inset = self.bounds.size.width / 3.7
         self.iconImageView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset))
-        self.iconImageView.image = self.iconImageView.image?.withRenderingMode(.alwaysTemplate)
-        self.iconImageView.tintColor = .white
     }
 }
 
@@ -141,29 +140,31 @@ class ContactDetailViewController: UIViewController {
         self.messageButton.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconBottomMargin * -1.0)
         self.messageButton.autoPinEdge(.left, to: .left, of: self.headerView, withOffset: iconSideMargin)
         self.messageButton.autoSetDimensions(to: CGSize(width: iconWidth, height: iconWidth))
-        self.messageButton.iconImageView.image = UIImage(named: "speechBubble")
+        self.messageButton.iconImageView.image = UIImage(named: "speechBubble")?.withRenderingMode(.alwaysTemplate)
+        self.messageButton.iconImageView.tintColor = .white
         self.messageButton.backgroundColor = self.lightGreen
         
         self.headerView.addSubview(self.callButton)
         self.callButton.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconBottomMargin * -1.0)
         self.callButton.autoPinEdge(.left, to: .right, of: self.messageButton, withOffset: iconSpacing)
         self.callButton.autoSetDimensions(to: CGSize(width: iconWidth, height: iconWidth))
-        self.callButton.iconImageView.image = UIImage(named: "phone")
+        self.callButton.iconImageView.image = UIImage(named: "phone")?.withRenderingMode(.alwaysTemplate)
+        self.callButton.iconImageView.tintColor = .white
         self.callButton.backgroundColor = self.lightGreen
         
         self.headerView.addSubview(self.emailButton)
         self.emailButton.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconBottomMargin * -1.0)
         self.emailButton.autoPinEdge(.left, to: .right, of: self.callButton, withOffset: iconSpacing)
         self.emailButton.autoSetDimensions(to: CGSize(width: iconWidth, height: iconWidth))
-        self.emailButton.iconImageView.image = UIImage(named: "mail")
+        self.emailButton.iconImageView.image = UIImage(named: "mail")?.withRenderingMode(.alwaysTemplate)
+        self.emailButton.iconImageView.tintColor = .white
         self.emailButton.backgroundColor = self.lightGreen
         
         self.headerView.addSubview(self.favoriteButton)
         self.favoriteButton.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconBottomMargin * -1.0)
         self.favoriteButton.autoPinEdge(.left, to: .right, of: self.emailButton, withOffset: iconSpacing)
         self.favoriteButton.autoSetDimensions(to: CGSize(width: iconWidth, height: iconWidth))
-        self.favoriteButton.iconImageView.image = UIImage(named: "star")
-        self.favoriteButton.backgroundColor = self.lightGreen
+        self.updateFavoriteButton()
         
         // register touch for icons
         self.messageButton.addTarget(self, action: #selector(ContactDetailViewController.didTapMessageIcon), for: .touchUpInside)
@@ -200,7 +201,25 @@ class ContactDetailViewController: UIViewController {
         print("tap email icon")
     }
     
+    private func updateFavoriteButton() {
+        DispatchQueue.main.async {
+            if self.contact.isFavorite {
+                self.favoriteButton.iconImageView.image = UIImage(named: "star")?.withRenderingMode(.alwaysTemplate)
+                self.favoriteButton.iconImageView.tintColor = .white
+                self.favoriteButton.backgroundColor = self.lightGreen
+            } else {
+                self.favoriteButton.iconImageView.image = UIImage(named: "starBorder")
+                self.favoriteButton.backgroundColor = .white
+            }
+            self.favoriteButton.setNeedsDisplay()
+        }
+    }
+    
     @objc public func didTapFavoriteIcon() {
-        print("tap favorite icon")
+        let realm: Realm = try! Realm()
+        try! realm.write {
+            self.contact.isFavorite = !self.contact.isFavorite
+        }
+        self.updateFavoriteButton()
     }
 }
