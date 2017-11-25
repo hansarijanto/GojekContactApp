@@ -106,12 +106,7 @@ class ContactManager {
                         // if url is missing then we set it to default
                         if imgUrl != "/images/missing.png" {
                             // download image
-                            if let apiId = personData["id"] as? Int {
-                                let filename = "\(apiId).png"
-                                if self.downloadImage(stringUrl: imgUrl, filename: filename) {
-                                    contact.imageFileName = filename
-                                }
-                            }
+                            contact.imageData = ContactManager.downloadImage(stringUrl: imgUrl)
                         }
                     }
                     
@@ -154,33 +149,17 @@ class ContactManager {
     }
     
     // donwload contact image to a designated
-    public func downloadImage(stringUrl: String, filename: String) -> Bool {
+    static public func downloadImage(stringUrl: String) -> Data? {
         if let url = URL(string: stringUrl) {
             do {
                 let data = try Data(contentsOf: url)
-                if let image = UIImage(data : data), let pngImageData = UIImagePNGRepresentation(image) {
-                    let fileURL = self.contactImageFolderURL.appendingPathComponent(filename)
-                    try pngImageData.write(to: fileURL, options: .atomic)
-                }
-                return true
+                return data
             } catch {
-                return false
+                return nil
             }
         } else {
-            return false
+            return nil
         }
-    }
-    
-    // load contact image given a contact
-    public func loadContactImage(contact: Contact) -> UIImage? {
-        if let fn = contact.imageFileName {
-            let filePath = self.contactImageFolderURL.appendingPathComponent(fn).path
-            if FileManager.default.fileExists(atPath: filePath) {
-                return UIImage(contentsOfFile: filePath)
-            }
-        }
-        
-        return nil
     }
     
     // returns all contact from realm

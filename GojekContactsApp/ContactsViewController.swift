@@ -183,12 +183,8 @@ extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
             let contact = contacts[indexPath.row]
             
             // load product image
-            if let contactImage = ContactManager.shared.loadContactImage(contact: contact) {
-                DispatchQueue.main.async {
-                    cell.contactImageView.image = contactImage
-                }
-            }
             DispatchQueue.main.async {
+                cell.contactImageView.image = contact.image()
                 cell.favoriteImageView.isHidden = !contact.isFavorite
                 cell.nameTitleLabel.text = contact.name()
             }

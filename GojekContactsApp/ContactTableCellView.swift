@@ -15,7 +15,6 @@ class ContactTableCellView: UITableViewCell {
     public let favoriteImageView  : UIImageView = UIImageView()
     
     private let contactImageWidth   : CGFloat = 40.0
-    private let contactDefaultImage : UIImage = #imageLiteral(resourceName: "missingContact")
     private let favoriteImageWidth  : CGFloat = 18.0
     private let favoriteImage       : UIImage = #imageLiteral(resourceName: "star")
     private let favoriteImageTint   : UIColor = UIColor(red: 80.0/255.0, green: 227.0/255.0, blue: 194.0/255.0, alpha: 1.0)
@@ -24,7 +23,6 @@ class ContactTableCellView: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.contactImageView.contentMode = .scaleAspectFit
-        self.contactImageView.image = self.contactDefaultImage
         self.contactImageView.clipsToBounds = true
         self.contactImageView.layer.cornerRadius = self.contactImageWidth / 2.0
         
@@ -66,7 +64,6 @@ class ContactTableCellView: UITableViewCell {
         super.prepareForReuse()
         
         self.favoriteImageView.isHidden = true
-        self.contactImageView.image     = self.contactDefaultImage
         self.nameTitleLabel.text        = nil
     }
 }

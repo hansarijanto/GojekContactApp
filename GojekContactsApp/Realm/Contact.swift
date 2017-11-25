@@ -21,8 +21,8 @@ class Contact: Object {
     @objc dynamic var lastName      : String? = nil
     @objc dynamic var email         : String? = nil
     @objc dynamic var mobile        : String? = nil
-    @objc dynamic var imageFileName : String? = nil
-    @objc dynamic var isFavorite    : Bool = false
+    @objc dynamic var isFavorite    : Bool    = false
+    @objc dynamic var imageData     : Data?   = nil
     
     override static func primaryKey() -> String? {
         return "id"
@@ -38,5 +38,15 @@ class Contact: Object {
         }
         
         return name
+    }
+    
+    func image() -> UIImage {
+        
+        var finalImage: UIImage = UIImage(named: "missingContact")!
+        if let data = self.imageData, let image = UIImage(data: data) {
+            finalImage = image
+        }
+        
+        return finalImage
     }
 }
