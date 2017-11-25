@@ -36,6 +36,7 @@ class ContactsViewController: UIViewController, ContactManagerDelegate {
     private let fadeViewLabelTextColor : UIColor = .white
     
     private let lightGreen : UIColor = UIColor(red: 80.0/255.0, green: 227.0/255.0, blue: 194.0/255.0, alpha: 1.0)
+    private let alphabetLabel: UILabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +61,18 @@ class ContactsViewController: UIViewController, ContactManagerDelegate {
         self.tableView.backgroundColor = self.backgroundColor
         self.view.addSubview(self.tableView)
         self.tableView.autoPinEdgesToSuperviewEdges()
+        self.tableView.showsVerticalScrollIndicator = false
+        
+        self.view.addSubview(self.alphabetLabel)
+        self.alphabetLabel.autoPinEdge(toSuperviewEdge: .top)
+        self.alphabetLabel.autoPinEdge(toSuperviewEdge: .bottom)
+        self.alphabetLabel.autoPinEdge(toSuperviewEdge: .right)
+        self.alphabetLabel.autoSetDimension(.width, toSize: 16.0)
+        self.alphabetLabel.font = UIFont.systemFont(ofSize: 12.0)
+        self.alphabetLabel.textColor = .lightGray
+        self.alphabetLabel.numberOfLines = -1
+        self.alphabetLabel.text = "A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM\nN\nO\nP\nQ\nR\nS\nT\nU\nV\nW\nX\nY\nZ"
+        self.alphabetLabel.textAlignment = .center
         
         // setup loading view
         self.fadeView.frame = self.view.frame

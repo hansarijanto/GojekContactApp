@@ -14,7 +14,7 @@ protocol ContactManagerDelegate: class {
     func didDownloadContacts()                        // called when the manager has completed downloading all the contacts and has saved them to Realm
     func didFailToDownloadContactsNoResponse()        // failure when no response from api (most likely no internet connection or api down)
     func didFailToDownloadContactsEmptyResponse()     // failure when a response has no data
-    func didDownloadContactsProgress(progress: Float) // called when the manager has started downloading contacts
+    func didDownloadContactsProgress(progress: Float) // called when the manager has is downloading contacts
     func didStartDownload()                           // called when the manager has started downloading contacts
 }
 

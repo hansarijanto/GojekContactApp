@@ -58,6 +58,8 @@ class ContactTableCellView: UITableViewCell {
         self.favoriteImageView.autoPinEdge(.right, to: .right, of: self.contentView, withOffset: -32.0)
         self.favoriteImageView.autoPinEdge(.top, to: .top, of: self.contentView, withOffset: 23.0)
         self.favoriteImageView.autoSetDimensions(to: CGSize(width: self.favoriteImageWidth, height: self.favoriteImageWidth))
+        
+        self.separatorInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 16.0)
     }
     
     override func prepareForReuse() {
