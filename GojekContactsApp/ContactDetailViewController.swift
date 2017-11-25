@@ -110,6 +110,8 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
     
     // UI Params
     private let lightGreen : UIColor = UIColor(red: 80.0/255.0, green: 227.0/255.0, blue: 194.0/255.0, alpha: 1.0)
+    private var headerHeighConstraint : NSLayoutConstraint? = nil
+    private var headerHeight : CGFloat = 335.0
     
     //table view
     private let tableView: UITableView = UITableView()
@@ -152,11 +154,12 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         
+        self.headerHeight = headerHeight - statusNavBarHeight
         self.view.addSubview(self.headerView)
         self.headerView.autoPinEdge(toSuperviewEdge: .left)
         self.headerView.autoPinEdge(toSuperviewEdge: .right)
         self.headerView.autoPinEdge(toSuperviewEdge: .top)
-        self.headerView.autoSetDimension(.height, toSize: 335.0 - statusNavBarHeight)
+        self.headerHeighConstraint = self.headerView.autoSetDimension(.height, toSize: self.headerHeight)
         
         self.headerView.backgroundColor = .white
         self.headerView.translatesAutoresizingMaskIntoConstraints = false
@@ -248,29 +251,39 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         let iconFont = UIFont.systemFont(ofSize: 12.0, weight: .semibold)
         let iconFontColor = UIColor(red: 74.0/255.0, green: 74.0/255.0, blue: 74.0/255.0, alpha: 1.0)
         
+        let iconButtonOffset: CGFloat = 12.0
+        
         self.messageLabel.text = "message"
         self.messageLabel.font = iconFont
         self.messageLabel.textColor = iconFontColor
         self.messageLabel.textAlignment = .center
         self.messageLabel.autoSetDimensions(to: CGSize(width: 100.0, height: 13.0))
+        self.messageLabel.autoAlignAxis(.vertical, toSameAxisOf: self.messageButton)
+        self.messageLabel.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconButtonOffset * -1.0)
         
         self.callLabel.text = "call"
         self.callLabel.font = iconFont
         self.callLabel.textColor = iconFontColor
         self.callLabel.textAlignment = .center
         self.callLabel.autoSetDimensions(to: CGSize(width: 100.0, height: 13.0))
+        self.callLabel.autoAlignAxis(.vertical, toSameAxisOf: self.callButton)
+        self.callLabel.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconButtonOffset * -1.0)
         
         self.emailLabel.text = "email"
         self.emailLabel.font = iconFont
         self.emailLabel.textColor = iconFontColor
         self.emailLabel.textAlignment = .center
         self.emailLabel.autoSetDimensions(to: CGSize(width: 100.0, height: 13.0))
+        self.emailLabel.autoAlignAxis(.vertical, toSameAxisOf: self.emailButton)
+        self.emailLabel.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconButtonOffset * -1.0)
         
         self.favoriteLabel.text = "favorite"
         self.favoriteLabel.font = iconFont
         self.favoriteLabel.textColor = iconFontColor
         self.favoriteLabel.textAlignment = .center
         self.favoriteLabel.autoSetDimensions(to: CGSize(width: 100.0, height: 13.0))
+        self.favoriteLabel.autoAlignAxis(.vertical, toSameAxisOf: self.favoriteButton)
+        self.favoriteLabel.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconButtonOffset * -1.0)
         
         var name = ""
         if let fn = self.contact.firstName {
@@ -302,13 +315,6 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         
         // set gradient frame
         self.gradient.frame = self.headerView.bounds
-        
-        // set center of icon labels
-        let iconLabelOffset: CGFloat = 34.0
-        self.messageLabel.center = CGPoint(x: self.messageButton.center.x, y: self.messageButton.center.y + iconLabelOffset)
-        self.callLabel.center = CGPoint(x: self.callButton.center.x, y: self.callButton.center.y + iconLabelOffset)
-        self.emailLabel.center = CGPoint(x: self.emailButton.center.x, y: self.emailButton.center.y + iconLabelOffset)
-        self.favoriteLabel.center = CGPoint(x: self.favoriteButton.center.x, y: self.favoriteButton.center.y + iconLabelOffset)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -324,10 +330,51 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
                 self.navigationItem.rightBarButtonItem = self.doneButton
                 self.navigationItem.leftBarButtonItem = self.cancelButton
                 self.tableView.isUserInteractionEnabled = true
+                
+                self.messageButton.isUserInteractionEnabled = false
+                self.callButton.isUserInteractionEnabled = false
+                self.emailButton.isUserInteractionEnabled = false
+                self.favoriteButton.isUserInteractionEnabled = false
+                
+                self.headerHeighConstraint?.constant = self.headerHeight - 100.0
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.messageButton.alpha = 0.0
+                    self.callButton.alpha = 0.0
+                    self.emailButton.alpha = 0.0
+                    self.favoriteButton.alpha = 0.0
+                    self.nameLabel.alpha = 0.0
+                    self.messageLabel.alpha = 0.0
+                    self.callLabel.alpha = 0.0
+                    self.emailLabel.alpha = 0.0
+                    self.favoriteLabel.alpha = 0.0
+                    self.view.layoutIfNeeded()
+                })
+                
             } else if self.mode == .view {
                 self.navigationItem.rightBarButtonItem = self.editButton
                 self.navigationItem.leftBarButtonItem = self.backButton
                 self.tableView.isUserInteractionEnabled = false
+                
+                self.headerHeighConstraint?.constant = self.headerHeight
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.messageButton.alpha = 1.0
+                    self.callButton.alpha = 1.0
+                    self.emailButton.alpha = 1.0
+                    self.nameLabel.alpha = 1.0
+                    self.favoriteButton.alpha = 1.0
+                    self.messageLabel.alpha = 1.0
+                    self.callLabel.alpha = 1.0
+                    self.emailLabel.alpha = 1.0
+                    self.favoriteLabel.alpha = 1.0
+                    self.view.layoutIfNeeded()
+                }, completion: { (finished: Bool) in
+                    if finished {
+                        self.messageButton.isUserInteractionEnabled = true
+                        self.callButton.isUserInteractionEnabled = true
+                        self.emailButton.isUserInteractionEnabled = true
+                        self.favoriteButton.isUserInteractionEnabled = true
+                    }
+                })
             }
         }
         
