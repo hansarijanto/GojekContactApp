@@ -98,7 +98,7 @@ class ContactsViewController: UIViewController, ContactManagerDelegate {
         
     }
     
-    private func reloadData() {
+    public func reloadData() {
         DispatchQueue.main.async {
             self.contactsDict = ContactManager.shared.contactsSorted()
             self.tableView.reloadData()
@@ -200,7 +200,7 @@ extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return self.contactsSections[section]
     }
-    
+
     // MARK: Table View Delegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tableView.deselectRow(at: indexPath, animated: true)
@@ -210,6 +210,7 @@ extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
         if let contacts = self.contactsDict[alphabet] {
             let contact = contacts[indexPath.row]
             let contactDetailVC = ContactDetailViewController(contact: contact)
+            contactDetailVC.listVC = self
             self.navigationController?.pushViewController(contactDetailVC, animated: true)
         }
     }

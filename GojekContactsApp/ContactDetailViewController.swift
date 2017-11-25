@@ -83,7 +83,7 @@ class ContactDetailTableCellView: UITableViewCell {
     }
 }
 
-class ContactDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+class ContactDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // defining params
     private(set) var mode    : ContactDetailViewControllerMode = .view {
         didSet {
@@ -116,6 +116,11 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
     private var activeTextField: UITextField? = nil
     private var doneButton: UIBarButtonItem? = nil
     private var editButton: UIBarButtonItem? = nil
+    private var backButton: UIBarButtonItem? = nil
+    
+    private(set) var didUpdateContact: Bool = false
+    
+    public weak var listVC: ContactsViewController? = nil
     
     init(contact: Contact) {
         self.contact = contact
@@ -285,6 +290,7 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.tableView.register(ContactDetailTableCellView.self, forCellReuseIdentifier: "ContactDetailCell")
         self.tableView.isScrollEnabled = false
         
+        self.backButton = self.navigationItem.leftBarButtonItem
         self.updateUIForMode()
     }
     
@@ -300,6 +306,13 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.callLabel.center = CGPoint(x: self.callButton.center.x, y: self.callButton.center.y + iconLabelOffset)
         self.emailLabel.center = CGPoint(x: self.emailButton.center.x, y: self.emailButton.center.y + iconLabelOffset)
         self.favoriteLabel.center = CGPoint(x: self.favoriteButton.center.x, y: self.favoriteButton.center.y + iconLabelOffset)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        // tell listVC to update data only if contact has been updated
+        if self.didUpdateContact {
+            self.listVC?.reloadData()
+        }
     }
     
     private func updateUIForMode() {
@@ -348,13 +361,54 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         let realm: Realm = try! Realm()
         try! realm.write {
             self.contact.isFavorite = !self.contact.isFavorite
+            self.didUpdateContact = true
         }
         self.updateFavoriteButton()
     }
     
     // MARK: Navigation Bar Item Callback
     @objc public func didTapDoneButton() {
+        
         self.activeTextField?.resignFirstResponder()
+        
+        // update contact
+        let realm: Realm = try! Realm()
+        try! realm.write {
+            let firstNameTF = (self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! ContactDetailTableCellView).contentField
+            let lastNameTF = (self.tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as! ContactDetailTableCellView).contentField
+            let mobileTF = (self.tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! ContactDetailTableCellView).contentField
+            let emailTF = (self.tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! ContactDetailTableCellView).contentField
+            
+            if let fn = firstNameTF.text, fn != "" {
+                if contact.firstName == nil || contact.firstName! != fn {
+                    contact.firstName = fn
+                    self.didUpdateContact = true
+                }
+            }
+            
+            if let ln = lastNameTF.text, ln != "" {
+                if contact.lastName == nil || contact.lastName! != ln {
+                    contact.lastName = ln
+                    self.didUpdateContact = true
+                }
+            }
+            
+            if let mobile = mobileTF.text, mobile != "" {
+                if contact.mobile == nil || contact.mobile! != mobile {
+                    contact.mobile = mobile
+                    self.didUpdateContact = true
+                }
+            }
+            
+            if let email = emailTF.text, email != "" {
+                if contact.email == nil || contact.email! != email {
+                    contact.email = email
+                    self.didUpdateContact = true
+                }
+            }
+        }
+        
+        self.activeTextField = nil
         self.mode = .view
     }
     
@@ -414,7 +468,6 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
             cell.contentField.keyboardType = .emailAddress
         }
         
-        cell.contentField.delegate = self
         cell.selectionStyle = .none
         
         return cell
@@ -456,26 +509,5 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         return
-    }
-    
-    // MARK: TextField Delegate
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        self.activeTextField = textField
-        switch self.textFieldOfType(tf: textField) {
-        case .firstname:
-            break
-        case .lastname:
-            break
-        case .mobile:
-            break
-        case .email:
-            break
-        default:
-            break
-        }
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        return true
     }
 }
