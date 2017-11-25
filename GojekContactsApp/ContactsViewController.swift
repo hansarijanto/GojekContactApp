@@ -117,8 +117,8 @@ class ContactsViewController: UIViewController, ContactManagerDelegate {
     
     //MARK: Contact Manager Delegate
     func didDownloadContacts() {
-            self.reloadData()
-            self.hideLoadingUI()
+        self.reloadData()
+        self.hideLoadingUI()
     }
     
     func didFailToDownloadContactsNoResponse() {
@@ -200,7 +200,8 @@ extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tableView.deselectRow(at: indexPath, animated: true)
         let alphabet = self.contactsSections[indexPath.section]
-
+        
+        // display contact detail VC of selected contact
         if let contacts = self.contactsDict[alphabet] {
             let contact = contacts[indexPath.row]
             let contactDetailVC = ContactDetailViewController(contact: contact)
