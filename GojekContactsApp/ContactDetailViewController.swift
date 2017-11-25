@@ -123,7 +123,7 @@ class ContactDetailTableCellView: UITableViewCell, UITextFieldDelegate {
     }
 }
 
-class ContactDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate {
+class ContactDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate {
     // defining params
     private(set) var mode    : ContactDetailViewControllerMode = .view {
         didSet {
@@ -448,7 +448,16 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     @objc public func didTapEmailIcon() {
-        print("tap email icon")
+        if let email = self.contact.email, MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients([email])
+            self.present(mail, animated: true)
+        }
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
     }
     
     private func updateFavoriteButton() {
