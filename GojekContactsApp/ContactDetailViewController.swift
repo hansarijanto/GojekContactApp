@@ -117,6 +117,7 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
     private var doneButton: UIBarButtonItem? = nil
     private var editButton: UIBarButtonItem? = nil
     private var backButton: UIBarButtonItem? = nil
+    private var cancelButton: UIBarButtonItem? = nil
     
     private(set) var didUpdateContact: Bool = false
     
@@ -130,6 +131,8 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(ContactDetailViewController.didTapDoneButton))
         
         self.editButton = UIBarButtonItem(title: "Edit", style: .done, target: self, action: #selector(ContactDetailViewController.didTapEditButton))
+        
+        self.cancelButton = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(ContactDetailViewController.didTapCancelButton))
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -319,9 +322,11 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         DispatchQueue.main.async {
             if self.mode == .edit {
                 self.navigationItem.rightBarButtonItem = self.doneButton
+                self.navigationItem.leftBarButtonItem = self.cancelButton
                 self.tableView.isUserInteractionEnabled = true
             } else if self.mode == .view {
                 self.navigationItem.rightBarButtonItem = self.editButton
+                self.navigationItem.leftBarButtonItem = self.backButton
                 self.tableView.isUserInteractionEnabled = false
             }
         }
@@ -367,8 +372,26 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     // MARK: Navigation Bar Item Callback
-    @objc public func didTapDoneButton() {
+    @objc public func didTapCancelButton() {
+        self.activeTextField?.resignFirstResponder()
         
+        let firstNameTF = (self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! ContactDetailTableCellView).contentField
+        let lastNameTF = (self.tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as! ContactDetailTableCellView).contentField
+        let mobileTF = (self.tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! ContactDetailTableCellView).contentField
+        let emailTF = (self.tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! ContactDetailTableCellView).contentField
+        
+        DispatchQueue.main.async {
+            firstNameTF.text = self.contact.firstName
+            lastNameTF.text = self.contact.lastName
+            mobileTF.text = self.contact.mobile
+            emailTF.text = self.contact.email
+        }
+        
+        self.activeTextField = nil
+        self.mode = .view
+    }
+    
+    @objc public func didTapDoneButton() {
         self.activeTextField?.resignFirstResponder()
         
         // update contact
