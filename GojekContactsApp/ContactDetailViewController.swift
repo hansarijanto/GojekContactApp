@@ -15,7 +15,7 @@ enum ContactDetailViewControllerMode {
     case edit
 }
 
-class ContactDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate {
+class ContactDetailViewController: UIViewController {
     // defining params
     private(set) var mode    : ContactDetailViewControllerMode = .view {
         didSet {
@@ -360,10 +360,6 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
     
-    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
     @objc public func didTapCallIcon() {
         if let mobile = self.contact.mobile, let url = URL(string: "tel://\(mobile)"), UIApplication.shared.canOpenURL(url) {
             if #available(iOS 10, *) {
@@ -381,10 +377,6 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
             mail.setToRecipients([email])
             self.present(mail, animated: true)
         }
-    }
-    
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        controller.dismiss(animated: true)
     }
     
     private func updateFavoriteButton() {
@@ -487,6 +479,9 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
     @objc public func didTapEditButton() {
         self.mode = .edit
     }
+}
+
+extension ContactDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
     // MARK: Table View Datasource
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -547,7 +542,7 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 4
     }
@@ -576,5 +571,16 @@ extension ContactDetailViewController: UINavigationControllerDelegate, UIImagePi
         }
         
         picker.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension ContactDetailViewController: MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate {
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
     }
 }

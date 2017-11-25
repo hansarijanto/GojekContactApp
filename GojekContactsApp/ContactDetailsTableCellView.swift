@@ -10,10 +10,10 @@ import UIKit
 
 class ContactDetailTableCellView: UITableViewCell, UITextFieldDelegate {
     
-    public let mainLabel: UILabel = UILabel()
-    public let contentField: UITextField = UITextField()
-    private let cancelButton: UIButton = UIButton()
-    private let cancelImage: UIImageView = UIImageView()
+    public let mainLabel     : UILabel     = UILabel()
+    public let contentField  : UITextField = UITextField()
+    private let cancelButton : UIButton    = UIButton()
+    private let cancelImage  : UIImageView = UIImageView()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
