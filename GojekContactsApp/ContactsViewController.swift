@@ -35,9 +35,14 @@ class ContactsViewController: UIViewController, ContactManagerDelegate {
     private let fadeViewLabelText      : String  = "Downloading Contacts"
     private let fadeViewLabelTextColor : UIColor = .white
     
+    private let lightGreen : UIColor = UIColor(red: 80.0/255.0, green: 227.0/255.0, blue: 194.0/255.0, alpha: 1.0)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        // set navbar tint color
+        self.navigationController?.navigationBar.tintColor = self.lightGreen
         
         // setup contacts data
         self.contactsDict     = ContactManager.shared.contactsSorted()

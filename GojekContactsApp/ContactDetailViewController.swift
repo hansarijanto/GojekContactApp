@@ -79,6 +79,9 @@ class ContactDetailViewController: UIViewController {
         
         let statusNavBarHeight: CGFloat = self.navigationController!.navigationBar.bounds.height + UIApplication.shared.statusBarFrame.size.height
         
+        // set navbar tint color
+        self.navigationController?.navigationBar.tintColor = self.lightGreen
+        
         self.view.backgroundColor = .clear
         // remove nav bar separator
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
