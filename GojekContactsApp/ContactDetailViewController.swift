@@ -30,11 +30,53 @@ class ContactDetailIconButton: UIButton {
     }
 }
 
-class ContactDetailEditableLabel: UIView {
+class ContactDetailTableCellView: UITableViewCell {
     
+    public let mainLabel: UILabel = UILabel()
+    public let contentField: UITextField = UITextField()
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        self.mainLabel.textAlignment = .right
+        self.contentField.textAlignment = .left
+        
+        let mainFont: UIFont = UIFont.systemFont(ofSize: 16.0)
+        self.mainLabel.font = mainFont
+        self.mainLabel.textColor = UIColor(red: 180.0/255.0, green: 180.0/255.0, blue: 180.0/255.0, alpha: 1.0)
+        
+        let contentFont: UIFont = UIFont.systemFont(ofSize: 16.0)
+        self.contentField.font = contentFont
+        
+        self.contentView.addSubview(self.mainLabel)
+        self.contentView.addSubview(self.contentField)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.mainLabel.autoPinEdge(toSuperviewEdge: .top)
+        self.mainLabel.autoPinEdge(toSuperviewEdge: .bottom)
+        self.mainLabel.autoPinEdge(.left, to: .left, of: self.contentView, withOffset: 0.0)
+        self.mainLabel.autoPinEdge(.right, to: .left, of: self.contentView, withOffset: 100.0)
+        
+        self.contentField.autoPinEdge(toSuperviewEdge: .top)
+        self.contentField.autoPinEdge(toSuperviewEdge: .bottom)
+        self.contentField.autoPinEdge(.left, to: .right, of: self.mainLabel, withOffset: 32.0)
+        self.contentField.autoPinEdge(toSuperviewEdge: .right)
+        
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+    }
 }
 
-class ContactDetailViewController: UIViewController {
+class ContactDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // defining params
     private(set) var mode    : ContactDetailViewControllerMode = .view
     private(set) var contact : Contact
@@ -46,7 +88,6 @@ class ContactDetailViewController: UIViewController {
     private let profileImageView      : UIImageView     = UIImageView()
     private let nameLabel             : UILabel         = UILabel()
     
-    // TODO: Create custom button UIView
     private let messageButton    : ContactDetailIconButton    = ContactDetailIconButton()
     private let callButton       : ContactDetailIconButton    = ContactDetailIconButton()
     private let emailButton      : ContactDetailIconButton    = ContactDetailIconButton()
@@ -56,14 +97,11 @@ class ContactDetailViewController: UIViewController {
     private let emailLabel       : UILabel     = UILabel()
     private let favoriteLabel    : UILabel     = UILabel()
     
-    // TODO: Create custome for fields UIView
-    private let firstNameEditableLabel : ContactDetailEditableLabel = ContactDetailEditableLabel()
-    private let lastNameEditableLabel  : ContactDetailEditableLabel = ContactDetailEditableLabel()
-    private let emailEditableLabel     : ContactDetailEditableLabel = ContactDetailEditableLabel()
-    private let mobileEditableLabel    : ContactDetailEditableLabel = ContactDetailEditableLabel()
-    
     // UI Params
     private let lightGreen : UIColor = UIColor(red: 80.0/255.0, green: 227.0/255.0, blue: 194.0/255.0, alpha: 1.0)
+    
+    //table view
+    private let tableView: UITableView = UITableView()
     
     init(contact: Contact) {
         self.contact = contact
@@ -216,6 +254,16 @@ class ContactDetailViewController: UIViewController {
         }
         self.nameLabel.text = name
         
+        // table view setup
+        self.view.addSubview(self.tableView)
+        self.tableView.autoPinEdge(toSuperviewEdge: .left)
+        self.tableView.autoPinEdge(toSuperviewEdge: .right)
+        self.tableView.autoPinEdge(toSuperviewEdge: .bottom)
+        self.tableView.autoPinEdge(.top, to: .bottom, of: self.headerView)
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        self.tableView.tableFooterView = UIView() // remove extra table view cells
+        self.tableView.register(ContactDetailTableCellView.self, forCellReuseIdentifier: "ContactDetailCell")
     }
     
     override func viewDidLayoutSubviews() {
@@ -266,5 +314,43 @@ class ContactDetailViewController: UIViewController {
             self.contact.isFavorite = !self.contact.isFavorite
         }
         self.updateFavoriteButton()
+    }
+    
+    // MARK: Table View Datasource
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 58.0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "ContactDetailCell") as! ContactDetailTableCellView
+        
+        if indexPath.row == 0 {
+            cell.mainLabel.text = "First Name"
+            cell.contentField.text = self.contact.firstName
+        } else if indexPath.row == 1 {
+            cell.mainLabel.text = "Last Name"
+            cell.contentField.text = self.contact.lastName
+        } else if indexPath.row == 2 {
+            cell.mainLabel.text = "mobile"
+            cell.contentField.text = self.contact.mobile
+        } else if indexPath.row == 3 {
+            cell.mainLabel.text = "email"
+            cell.contentField.text = self.contact.email
+        }
+        
+        return cell
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 4
+    }
+    
+    // MARK: Table View Delegate
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        return
     }
 }

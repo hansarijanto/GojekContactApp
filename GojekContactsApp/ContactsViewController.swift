@@ -156,6 +156,7 @@ class ContactsViewController: UIViewController, ContactManagerDelegate {
 // MARK: Table View Extension
 extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
     
+    // MARK: Table View Datasource
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return self.rowHeight
     }
@@ -183,7 +184,6 @@ extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    // MARK: Table View Datasource
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.contactsSections.count
     }
