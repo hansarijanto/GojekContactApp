@@ -27,4 +27,16 @@ class Contact: Object {
     override static func primaryKey() -> String? {
         return "id"
     }
+    
+    func name() -> String {
+        var name = ""
+        if let fn = self.firstName {
+            name = fn + " "
+        }
+        if let ln = self.lastName {
+            name = name + ln
+        }
+        
+        return name
+    }
 }

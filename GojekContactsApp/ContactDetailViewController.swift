@@ -110,8 +110,8 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
     
     // UI Params
     private let lightGreen : UIColor = UIColor(red: 80.0/255.0, green: 227.0/255.0, blue: 194.0/255.0, alpha: 1.0)
-    private var headerHeighConstraint : NSLayoutConstraint? = nil
-    private var headerHeight : CGFloat = 335.0
+    private var headerConstraint : NSLayoutConstraint? = nil
+    private let headerLabelOffset: CGFloat = 12.0
     
     //table view
     private let tableView: UITableView = UITableView()
@@ -144,8 +144,6 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let statusNavBarHeight: CGFloat = self.navigationController!.navigationBar.bounds.height + UIApplication.shared.statusBarFrame.size.height
-        
         // set navbar tint color
         self.navigationController?.navigationBar.tintColor = self.lightGreen
         
@@ -154,12 +152,10 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         
-        self.headerHeight = headerHeight - statusNavBarHeight
         self.view.addSubview(self.headerView)
         self.headerView.autoPinEdge(toSuperviewEdge: .left)
         self.headerView.autoPinEdge(toSuperviewEdge: .right)
         self.headerView.autoPinEdge(toSuperviewEdge: .top)
-        self.headerHeighConstraint = self.headerView.autoSetDimension(.height, toSize: self.headerHeight)
         
         self.headerView.backgroundColor = .white
         self.headerView.translatesAutoresizingMaskIntoConstraints = false
@@ -170,7 +166,7 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         
         self.view.addSubview(self.profileImageContainer)
         self.profileImageContainer.backgroundColor = .white
-        self.profileImageContainer.autoPinEdge(.top, to: .top, of: self.headerView, withOffset: 81.0 - statusNavBarHeight)
+        self.profileImageContainer.autoPinEdge(.top, to: .top, of: self.headerView, withOffset: 17.0)
         self.profileImageContainer.autoAlignAxis(toSuperviewAxis: .vertical)
         let imageContainerWidth: CGFloat = 126.0
         self.profileImageContainer.autoSetDimensions(to: CGSize(width: imageContainerWidth, height: imageContainerWidth))
@@ -203,12 +199,11 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         // icon params
         let iconWidth: CGFloat        = 44.0
         let iconSpacing: CGFloat      = 36.0
-        let iconBottomMargin: CGFloat = 32.0
         let iconSideMargin: CGFloat   = (UIScreen.main.bounds.width - (3.0 * iconSpacing) - (4.0 * iconWidth)) / 2.0
         
         // constraint icons
         self.headerView.addSubview(self.messageButton)
-        self.messageButton.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconBottomMargin * -1.0)
+        self.messageButton.autoPinEdge(.top, to: .bottom, of: self.nameLabel, withOffset: 20.0)
         self.messageButton.autoPinEdge(.left, to: .left, of: self.headerView, withOffset: iconSideMargin)
         self.messageButton.autoSetDimensions(to: CGSize(width: iconWidth, height: iconWidth))
         self.messageButton.iconImageView.image = UIImage(named: "speechBubble")?.withRenderingMode(.alwaysTemplate)
@@ -216,7 +211,7 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.messageButton.backgroundColor = self.lightGreen
         
         self.headerView.addSubview(self.callButton)
-        self.callButton.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconBottomMargin * -1.0)
+        self.callButton.autoPinEdge(.top, to: .bottom, of: self.nameLabel, withOffset: 20.0)
         self.callButton.autoPinEdge(.left, to: .right, of: self.messageButton, withOffset: iconSpacing)
         self.callButton.autoSetDimensions(to: CGSize(width: iconWidth, height: iconWidth))
         self.callButton.iconImageView.image = UIImage(named: "phone")?.withRenderingMode(.alwaysTemplate)
@@ -224,7 +219,7 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.callButton.backgroundColor = self.lightGreen
         
         self.headerView.addSubview(self.emailButton)
-        self.emailButton.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconBottomMargin * -1.0)
+        self.emailButton.autoPinEdge(.top, to: .bottom, of: self.nameLabel, withOffset: 20.0)
         self.emailButton.autoPinEdge(.left, to: .right, of: self.callButton, withOffset: iconSpacing)
         self.emailButton.autoSetDimensions(to: CGSize(width: iconWidth, height: iconWidth))
         self.emailButton.iconImageView.image = UIImage(named: "mail")?.withRenderingMode(.alwaysTemplate)
@@ -232,7 +227,7 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.emailButton.backgroundColor = self.lightGreen
         
         self.headerView.addSubview(self.favoriteButton)
-        self.favoriteButton.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconBottomMargin * -1.0)
+        self.favoriteButton.autoPinEdge(.top, to: .bottom, of: self.nameLabel, withOffset: 20.0)
         self.favoriteButton.autoPinEdge(.left, to: .right, of: self.emailButton, withOffset: iconSpacing)
         self.favoriteButton.autoSetDimensions(to: CGSize(width: iconWidth, height: iconWidth))
         self.updateFavoriteButton()
@@ -251,7 +246,7 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         let iconFont = UIFont.systemFont(ofSize: 12.0, weight: .semibold)
         let iconFontColor = UIColor(red: 74.0/255.0, green: 74.0/255.0, blue: 74.0/255.0, alpha: 1.0)
         
-        let iconButtonOffset: CGFloat = 12.0
+        let iconButtonOffset: CGFloat = 10.0
         
         self.messageLabel.text = "message"
         self.messageLabel.font = iconFont
@@ -259,7 +254,7 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.messageLabel.textAlignment = .center
         self.messageLabel.autoSetDimensions(to: CGSize(width: 100.0, height: 13.0))
         self.messageLabel.autoAlignAxis(.vertical, toSameAxisOf: self.messageButton)
-        self.messageLabel.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconButtonOffset * -1.0)
+        self.messageLabel.autoPinEdge(.top, to: .bottom, of: self.messageButton, withOffset: iconButtonOffset)
         
         self.callLabel.text = "call"
         self.callLabel.font = iconFont
@@ -267,7 +262,7 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.callLabel.textAlignment = .center
         self.callLabel.autoSetDimensions(to: CGSize(width: 100.0, height: 13.0))
         self.callLabel.autoAlignAxis(.vertical, toSameAxisOf: self.callButton)
-        self.callLabel.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconButtonOffset * -1.0)
+        self.callLabel.autoPinEdge(.top, to: .bottom, of: self.callButton, withOffset: iconButtonOffset)
         
         self.emailLabel.text = "email"
         self.emailLabel.font = iconFont
@@ -275,7 +270,7 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.emailLabel.textAlignment = .center
         self.emailLabel.autoSetDimensions(to: CGSize(width: 100.0, height: 13.0))
         self.emailLabel.autoAlignAxis(.vertical, toSameAxisOf: self.emailButton)
-        self.emailLabel.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconButtonOffset * -1.0)
+        self.emailLabel.autoPinEdge(.top, to: .bottom, of: self.emailButton, withOffset: iconButtonOffset)
         
         self.favoriteLabel.text = "favorite"
         self.favoriteLabel.font = iconFont
@@ -283,16 +278,11 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.favoriteLabel.textAlignment = .center
         self.favoriteLabel.autoSetDimensions(to: CGSize(width: 100.0, height: 13.0))
         self.favoriteLabel.autoAlignAxis(.vertical, toSameAxisOf: self.favoriteButton)
-        self.favoriteLabel.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: iconButtonOffset * -1.0)
+        self.favoriteLabel.autoPinEdge(.top, to: .bottom, of: self.favoriteButton, withOffset: iconButtonOffset)
         
-        var name = ""
-        if let fn = self.contact.firstName {
-            name = fn + " "
-        }
-        if let ln = self.contact.lastName {
-            name = name + ln
-        }
-        self.nameLabel.text = name
+        self.headerConstraint = self.headerView.autoPinEdge(.bottom, to: .bottom, of: self.callLabel, withOffset: self.headerLabelOffset)
+        
+        self.nameLabel.text = self.contact.name()
         
         // table view setup
         self.view.addSubview(self.tableView)
@@ -336,7 +326,7 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
                 self.emailButton.isUserInteractionEnabled = false
                 self.favoriteButton.isUserInteractionEnabled = false
                 
-                self.headerHeighConstraint?.constant = self.headerHeight - 100.0
+                self.headerConstraint?.constant = self.headerLabelOffset - 110.0
                 UIView.animate(withDuration: 0.2, animations: {
                     self.messageButton.alpha = 0.0
                     self.callButton.alpha = 0.0
@@ -355,7 +345,7 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
                 self.navigationItem.leftBarButtonItem = self.backButton
                 self.tableView.isUserInteractionEnabled = false
                 
-                self.headerHeighConstraint?.constant = self.headerHeight
+                self.headerConstraint?.constant = self.headerLabelOffset
                 UIView.animate(withDuration: 0.2, animations: {
                     self.messageButton.alpha = 1.0
                     self.callButton.alpha = 1.0
@@ -449,32 +439,40 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
             let mobileTF = (self.tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! ContactDetailTableCellView).contentField
             let emailTF = (self.tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! ContactDetailTableCellView).contentField
             
-            if let fn = firstNameTF.text, fn != "" {
-                if contact.firstName == nil || contact.firstName! != fn {
+            if let fn = firstNameTF.text {
+                if fn == "" {
+                    contact.firstName = nil
+                } else if contact.firstName == nil || contact.firstName! != fn {
                     contact.firstName = fn
-                    self.didUpdateContact = true
                 }
+                self.didUpdateContact = true
             }
             
-            if let ln = lastNameTF.text, ln != "" {
-                if contact.lastName == nil || contact.lastName! != ln {
+            if let ln = lastNameTF.text {
+                if ln == "" {
+                    contact.lastName = nil
+                } else if contact.lastName == nil || contact.lastName! != ln {
                     contact.lastName = ln
-                    self.didUpdateContact = true
                 }
+                self.didUpdateContact = true
             }
             
-            if let mobile = mobileTF.text, mobile != "" {
-                if contact.mobile == nil || contact.mobile! != mobile {
+            if let mobile = mobileTF.text {
+                if mobile == "" {
+                    contact.mobile = nil
+                } else if contact.mobile == nil || contact.mobile! != mobile {
                     contact.mobile = mobile
-                    self.didUpdateContact = true
                 }
+                self.didUpdateContact = true
             }
             
-            if let email = emailTF.text, email != "" {
-                if contact.email == nil || contact.email! != email {
+            if let email = emailTF.text {
+                if email == "" {
+                    contact.email = nil
+                } else if contact.email == nil || contact.email! != email {
                     contact.email = email
-                    self.didUpdateContact = true
                 }
+                self.didUpdateContact = true
             }
         }
         

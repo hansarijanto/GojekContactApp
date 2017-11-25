@@ -71,7 +71,7 @@ class ContactsViewController: UIViewController, ContactManagerDelegate {
         self.alphabetLabel.font = UIFont.systemFont(ofSize: 12.0)
         self.alphabetLabel.textColor = .lightGray
         self.alphabetLabel.numberOfLines = -1
-        self.alphabetLabel.text = "A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM\nN\nO\nP\nQ\nR\nS\nT\nU\nV\nW\nX\nY\nZ"
+        self.alphabetLabel.text = "A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM\nN\nO\nP\nQ\nR\nS\nT\nU\nV\nW\nX\nY\nZ\n#"
         self.alphabetLabel.textAlignment = .center
         
         // setup loading view
@@ -190,7 +190,7 @@ extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
             }
             DispatchQueue.main.async {
                 cell.favoriteImageView.isHidden = !contact.isFavorite
-                cell.nameTitleLabel.text = "\(contact.firstName!) \(contact.lastName!)"
+                cell.nameTitleLabel.text = contact.name()
             }
         }
         
