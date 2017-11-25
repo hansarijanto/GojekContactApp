@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import MessageUI
 
 enum ContactDetailTextFieldType {
     case firstname
@@ -122,7 +123,7 @@ class ContactDetailTableCellView: UITableViewCell, UITextFieldDelegate {
     }
 }
 
-class ContactDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ContactDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate {
     // defining params
     private(set) var mode    : ContactDetailViewControllerMode = .view {
         didSet {
@@ -386,8 +387,20 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
                 
                 self.headerConstraint?.constant = self.headerLabelOffset
                 UIView.animate(withDuration: 0.2, animations: {
-                    self.messageButton.alpha = 1.0
+                    if self.contact.mobile != nil {
+                        self.callButton.backgroundColor = self.lightGreen
+                        self.messageButton.backgroundColor = self.lightGreen
+                    } else {
+                        self.callButton.backgroundColor = .lightGray
+                        self.messageButton.backgroundColor = .lightGray
+                    }
+                    if self.contact.email != nil {
+                        self.emailButton.backgroundColor = self.lightGreen
+                    } else {
+                        self.emailButton.backgroundColor = .lightGray
+                    }
                     self.callButton.alpha = 1.0
+                    self.messageButton.alpha = 1.0
                     self.emailButton.alpha = 1.0
                     self.nameLabel.alpha = 1.0
                     self.favoriteButton.alpha = 1.0
@@ -398,9 +411,9 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
                     self.view.layoutIfNeeded()
                 }, completion: { (finished: Bool) in
                     if finished {
-                        self.messageButton.isUserInteractionEnabled = true
-                        self.callButton.isUserInteractionEnabled = true
-                        self.emailButton.isUserInteractionEnabled = true
+                        self.messageButton.isUserInteractionEnabled = self.contact.mobile != nil
+                        self.callButton.isUserInteractionEnabled = self.contact.mobile != nil
+                        self.emailButton.isUserInteractionEnabled = self.contact.email != nil
                         self.favoriteButton.isUserInteractionEnabled = true
                     }
                 })
@@ -412,11 +425,26 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
     
     // MARK: Icon Touch Callbacks
     @objc public func didTapMessageIcon() {
-        print("tap message icon")
+        if let mobile = self.contact.mobile, MFMessageComposeViewController.canSendText() {
+            let composeVC = MFMessageComposeViewController()
+            composeVC.recipients = [mobile]
+            composeVC.messageComposeDelegate = self
+            self.present(composeVC, animated: true, completion: nil)
+        }
+    }
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     @objc public func didTapCallIcon() {
-        print("tap call icon")
+        if let mobile = self.contact.mobile, let url = URL(string: "tel://\(mobile)"), UIApplication.shared.canOpenURL(url) {
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        }
     }
     
     @objc public func didTapEmailIcon() {
