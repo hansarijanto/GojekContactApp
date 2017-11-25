@@ -125,7 +125,7 @@ class ContactDetailViewController: UIViewController {
         self.nameLabel.autoPinEdge(toSuperviewMargin: .left)
         self.nameLabel.autoPinEdge(toSuperviewMargin: .right)
         self.nameLabel.textAlignment = .center
-        self.nameLabel.autoSetDimension(.height, toSize: 20.0)
+        self.nameLabel.autoSetDimension(.height, toSize: 24.0)
         self.nameLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .bold)
         self.nameLabel.textColor = UIColor(red: 60.0/255.0, green: 60.0/255.0, blue: 60.0/255.0, alpha: 1.0)
         
@@ -172,6 +172,38 @@ class ContactDetailViewController: UIViewController {
         self.emailButton.addTarget(self, action: #selector(ContactDetailViewController.didTapEmailIcon), for: .touchUpInside)
         self.favoriteButton.addTarget(self, action: #selector(ContactDetailViewController.didTapFavoriteIcon), for: .touchUpInside)
         
+        self.headerView.addSubview(self.messageLabel)
+        self.headerView.addSubview(self.callLabel)
+        self.headerView.addSubview(self.emailLabel)
+        self.headerView.addSubview(self.favoriteLabel)
+        
+        let iconFont = UIFont.systemFont(ofSize: 12.0, weight: .semibold)
+        let iconFontColor = UIColor(red: 74.0/255.0, green: 74.0/255.0, blue: 74.0/255.0, alpha: 1.0)
+        
+        self.messageLabel.text = "message"
+        self.messageLabel.font = iconFont
+        self.messageLabel.textColor = iconFontColor
+        self.messageLabel.textAlignment = .center
+        self.messageLabel.autoSetDimensions(to: CGSize(width: 100.0, height: 13.0))
+        
+        self.callLabel.text = "call"
+        self.callLabel.font = iconFont
+        self.callLabel.textColor = iconFontColor
+        self.callLabel.textAlignment = .center
+        self.callLabel.autoSetDimensions(to: CGSize(width: 100.0, height: 13.0))
+        
+        self.emailLabel.text = "email"
+        self.emailLabel.font = iconFont
+        self.emailLabel.textColor = iconFontColor
+        self.emailLabel.textAlignment = .center
+        self.emailLabel.autoSetDimensions(to: CGSize(width: 100.0, height: 13.0))
+        
+        self.favoriteLabel.text = "favorite"
+        self.favoriteLabel.font = iconFont
+        self.favoriteLabel.textColor = iconFontColor
+        self.favoriteLabel.textAlignment = .center
+        self.favoriteLabel.autoSetDimensions(to: CGSize(width: 100.0, height: 13.0))
+        
         var name = ""
         if let fn = self.contact.firstName {
             name = fn + " "
@@ -185,7 +217,16 @@ class ContactDetailViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        // set gradient frame
         self.gradient.frame = self.headerView.bounds
+        
+        // set center of icon labels
+        let iconLabelOffset: CGFloat = 34.0
+        self.messageLabel.center = CGPoint(x: self.messageButton.center.x, y: self.messageButton.center.y + iconLabelOffset)
+        self.callLabel.center = CGPoint(x: self.callButton.center.x, y: self.callButton.center.y + iconLabelOffset)
+        self.emailLabel.center = CGPoint(x: self.emailButton.center.x, y: self.emailButton.center.y + iconLabelOffset)
+        self.favoriteLabel.center = CGPoint(x: self.favoriteButton.center.x, y: self.favoriteButton.center.y + iconLabelOffset)
     }
     
     // MARK: Icon Touch Callbacks
@@ -209,6 +250,7 @@ class ContactDetailViewController: UIViewController {
                 self.favoriteButton.backgroundColor = self.lightGreen
             } else {
                 self.favoriteButton.iconImageView.image = UIImage(named: "starBorder")
+                self.favoriteButton.tintColor = .lightGray
                 self.favoriteButton.backgroundColor = .white
             }
             self.favoriteButton.setNeedsDisplay()
