@@ -15,6 +15,22 @@ enum ContactDetailViewControllerMode {
 
 class ContactDetailIconButton: UIButton {
     
+    private let lightGreen    : UIColor     = UIColor(red: 80.0/255.0, green: 227.0/255.0, blue: 194.0/255.0, alpha: 1.0)
+    public  let iconImageView : UIImageView = UIImageView()
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.backgroundColor = lightGreen
+        self.layer.cornerRadius = frame.size.width / 2.0
+        
+        self.addSubview(self.iconImageView)
+        self.iconImageView.isUserInteractionEnabled = false
+        let inset = self.bounds.size.width / 4.0
+        self.iconImageView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset))
+        self.iconImageView.image = self.iconImageView.image?.withRenderingMode(.alwaysTemplate)
+        self.iconImageView.tintColor = .white
+    }
 }
 
 class ContactDetailEditableLabel: UIView {
@@ -106,6 +122,31 @@ class ContactDetailViewController: UIViewController {
         self.profileImageView.autoSetDimensions(to: CGSize(width: imageWidth, height: imageWidth))
         self.profileImageView.clipsToBounds = true
         self.profileImageView.layer.cornerRadius = imageWidth / 2.0
+        
+        self.headerView.addSubview(self.nameLabel)
+        self.nameLabel.autoPinEdge(.top, to: .bottom, of: self.profileImageContainer, withOffset: 8.0)
+        self.nameLabel.autoPinEdge(toSuperviewMargin: .left)
+        self.nameLabel.autoPinEdge(toSuperviewMargin: .right)
+        self.nameLabel.textAlignment = .center
+        self.nameLabel.autoSetDimension(.height, toSize: 20.0)
+        self.nameLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .bold)
+        self.nameLabel.textColor = UIColor(red: 60.0/255.0, green: 60.0/255.0, blue: 60.0/255.0, alpha: 1.0)
+        
+        self.headerView.addSubview(self.messageButton)
+        let iconWidth = 44.0
+        self.messageButton.autoPinEdge(.bottom, to: .bottom, of: self.headerView, withOffset: -32.0)
+        self.messageButton.autoPinEdge(.left, to: .left, of: self.headerView, withOffset: 44.0)
+        self.messageButton.autoSetDimensions(to: CGSize(width: iconWidth, height: iconWidth))
+        self.messageButton.iconImageView.image = UIImage(named: "speechBubble")
+        
+        var name = ""
+        if let fn = self.contact.firstName {
+            name = fn + " "
+        }
+        if let ln = self.contact.lastName {
+            name = name + ln
+        }
+        self.nameLabel.text = name
         
     }
     
