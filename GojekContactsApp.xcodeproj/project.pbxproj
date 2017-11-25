@@ -13,6 +13,8 @@
 		B80AA46B1FC46F8300286B80 /* NSArray+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B80AA4671FC46F8200286B80 /* NSArray+PureLayout.m */; };
 		B80AA46F1FC4710100286B80 /* ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80AA46E1FC4710100286B80 /* ContactManager.swift */; };
 		B835F8B31FCA02D1005641B2 /* DSCameraHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B835F8B21FCA02D1005641B2 /* DSCameraHandler.swift */; };
+		B835F8B51FCA10B9005641B2 /* ContactDetailsTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B835F8B41FCA10B9005641B2 /* ContactDetailsTableCellView.swift */; };
+		B835F8B91FCA10F6005641B2 /* ContactDetailsIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B835F8B81FCA10F6005641B2 /* ContactDetailsIconButton.swift */; };
 		B838D3221FC4326000A7FCE9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D3211FC4326000A7FCE9 /* AppDelegate.swift */; };
 		B838D3241FC4326000A7FCE9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838D3231FC4326000A7FCE9 /* ViewController.swift */; };
 		B838D3271FC4326000A7FCE9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B838D3251FC4326000A7FCE9 /* Main.storyboard */; };
@@ -75,7 +77,9 @@
 		B80AA4671FC46F8200286B80 /* NSArray+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+PureLayout.m"; sourceTree = "<group>"; };
 		B80AA4681FC46F8200286B80 /* NSLayoutConstraint+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+PureLayout.h"; sourceTree = "<group>"; };
 		B80AA46E1FC4710100286B80 /* ContactManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactManager.swift; sourceTree = "<group>"; };
-		B835F8B21FCA02D1005641B2 /* DSCameraHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSCameraHandler.swift; sourceTree = "<group>"; };
+		B835F8B21FCA02D1005641B2 /* DSCameraHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DSCameraHandler.swift; path = GojekContactsApp/DSCameraHandler.swift; sourceTree = "<group>"; };
+		B835F8B41FCA10B9005641B2 /* ContactDetailsTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailsTableCellView.swift; sourceTree = "<group>"; };
+		B835F8B81FCA10F6005641B2 /* ContactDetailsIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailsIconButton.swift; sourceTree = "<group>"; };
 		B838D31E1FC4326000A7FCE9 /* GojekContactsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GojekContactsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B838D3211FC4326000A7FCE9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B838D3231FC4326000A7FCE9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -208,6 +212,7 @@
 		B838D34F1FC4377300A7FCE9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B835F8B21FCA02D1005641B2 /* DSCameraHandler.swift */,
 				B838D3641FC43DD700A7FCE9 /* Realm.framework */,
 				B838D3651FC43DD800A7FCE9 /* RealmSwift.framework */,
 			);
@@ -226,10 +231,11 @@
 		B8D001921FC56DAA00D2516A /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
-				B835F8B21FCA02D1005641B2 /* DSCameraHandler.swift */,
+				B835F8B81FCA10F6005641B2 /* ContactDetailsIconButton.swift */,
 				B8D001931FC56DCC00D2516A /* ContactsViewController.swift */,
 				B8D001951FC5E7CA00D2516A /* ContactTableCellView.swift */,
 				B89FD29C1FC6CB590092D8B6 /* ContactDetailViewController.swift */,
+				B835F8B41FCA10B9005641B2 /* ContactDetailsTableCellView.swift */,
 			);
 			name = Contacts;
 			sourceTree = "<group>";
@@ -387,8 +393,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B838D36F1FC4432B00A7FCE9 /* Contact.swift in Sources */,
+				B835F8B51FCA10B9005641B2 /* ContactDetailsTableCellView.swift in Sources */,
 				B838D3241FC4326000A7FCE9 /* ViewController.swift in Sources */,
 				B835F8B31FCA02D1005641B2 /* DSCameraHandler.swift in Sources */,
+				B835F8B91FCA10F6005641B2 /* ContactDetailsIconButton.swift in Sources */,
 				B80AA45B1FC4619500286B80 /* HTTPManager.swift in Sources */,
 				B80AA46A1FC46F8300286B80 /* ALView+PureLayout.m in Sources */,
 				B80AA46B1FC46F8300286B80 /* NSArray+PureLayout.m in Sources */,

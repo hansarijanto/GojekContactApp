@@ -10,120 +10,12 @@ import UIKit
 import RealmSwift
 import MessageUI
 
-enum ContactDetailTextFieldType {
-    case firstname
-    case lastname
-    case mobile
-    case email
-    case unknown
-}
-
 enum ContactDetailViewControllerMode {
     case view
     case edit
 }
 
-class ContactDetailIconButton: UIButton {
-    
-    public  let iconImageView : UIImageView = UIImageView()
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        self.layer.cornerRadius = frame.size.width / 2.0
-        
-        self.addSubview(self.iconImageView)
-        self.iconImageView.isUserInteractionEnabled = false
-        let inset = self.bounds.size.width / 3.7
-        self.iconImageView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset))
-    }
-}
-
-class ContactDetailTableCellView: UITableViewCell, UITextFieldDelegate {
-    
-    public let mainLabel: UILabel = UILabel()
-    public let contentField: UITextField = UITextField()
-    private let cancelButton: UIButton = UIButton()
-    private let cancelImage: UIImageView = UIImageView()
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        self.mainLabel.textAlignment = .right
-        self.contentField.textAlignment = .left
-        
-        let mainFont: UIFont = UIFont.systemFont(ofSize: 16.0)
-        self.mainLabel.font = mainFont
-        self.mainLabel.textColor = UIColor(red: 180.0/255.0, green: 180.0/255.0, blue: 180.0/255.0, alpha: 1.0)
-        
-        let contentFont: UIFont = UIFont.systemFont(ofSize: 16.0)
-        self.contentField.font = contentFont
-        
-        self.cancelImage.image = UIImage(named: "x")
-        self.cancelButton.addTarget(self, action: #selector(ContactDetailTableCellView.didTapCancelButton), for: .touchUpInside)
-        
-        self.hideCancelButton(hide: true)
-        
-        self.contentView.addSubview(self.mainLabel)
-        self.contentView.addSubview(self.contentField)
-        self.contentView.addSubview(self.cancelImage)
-        self.contentView.addSubview(self.cancelButton)
-        
-        self.contentField.delegate = self
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        self.mainLabel.autoPinEdge(toSuperviewEdge: .top)
-        self.mainLabel.autoPinEdge(toSuperviewEdge: .bottom)
-        self.mainLabel.autoPinEdge(.left, to: .left, of: self.contentView, withOffset: 0.0)
-        self.mainLabel.autoPinEdge(.right, to: .left, of: self.contentView, withOffset: 100.0)
-        
-        self.cancelImage.autoSetDimensions(to: CGSize(width: 15.0, height: 15.0))
-        self.cancelImage.autoAlignAxis(toSuperviewAxis: .horizontal)
-        self.cancelImage.autoPinEdge(.right, to: .right, of: self.contentView, withOffset: -15.0)
-        
-        self.cancelButton.autoPinEdge(toSuperviewEdge: .top)
-        self.cancelButton.autoPinEdge(toSuperviewEdge: .bottom)
-        self.cancelButton.autoPinEdge(toSuperviewEdge: .right)
-        self.cancelButton.autoSetDimension(.width, toSize: 45.0)
-        
-        self.contentField.autoPinEdge(toSuperviewEdge: .top)
-        self.contentField.autoPinEdge(toSuperviewEdge: .bottom)
-        self.contentField.autoPinEdge(.left, to: .right, of: self.mainLabel, withOffset: 32.0)
-        self.contentField.autoPinEdge(.right, to: .left, of: self.cancelButton, withOffset: 0.0)
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        self.hideCancelButton(hide: true)
-    }
-    
-    @objc public func didTapCancelButton() {
-        self.contentField.text = ""
-    }
-    
-    public func hideCancelButton(hide: Bool) {
-        self.cancelImage.isHidden = hide
-        self.cancelButton.isHidden = hide
-    }
-    
-    // MARK: UITextField Delegate
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        self.hideCancelButton(hide: false)
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        self.hideCancelButton(hide: true)
-    }
-}
-
-class ContactDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ContactDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate {
     // defining params
     private(set) var mode    : ContactDetailViewControllerMode = .view {
         didSet {
@@ -459,23 +351,6 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.present(optionMenu, animated: true, completion: nil)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let image = info[UIImagePickerControllerEditedImage] as! UIImage
-        
-        // update contact image data
-        let realm: Realm = try! Realm()
-        try! realm.write {
-            self.contact.imageData = UIImagePNGRepresentation(image)
-        }
-        
-        // update new view profile image
-        DispatchQueue.main.async {
-            self.profileImageView.image = image
-        }
-        
-        picker.dismiss(animated: true, completion: nil)
-    }
-    
     @objc public func didTapMessageIcon() {
         if let mobile = self.contact.mobile, MFMessageComposeViewController.canSendText() {
             let composeVC = MFMessageComposeViewController()
@@ -678,32 +553,28 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     // MARK: Table View Delegate
-    private func textFieldOfType(tf: UITextField) -> ContactDetailTextFieldType {
-        
-        let firstNameTF = (self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! ContactDetailTableCellView).contentField
-        if firstNameTF == tf {
-            return .firstname
-        }
-        
-        let lastNameTF = (self.tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as! ContactDetailTableCellView).contentField
-        if lastNameTF == tf {
-            return .lastname
-        }
-        
-        let mobileTF = (self.tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! ContactDetailTableCellView).contentField
-        if mobileTF == tf {
-            return .mobile
-        }
-        
-        let emailTF = (self.tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! ContactDetailTableCellView).contentField
-        if emailTF == tf {
-            return .email
-        }
-        
-        return .unknown
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         return
+    }
+}
+
+
+extension ContactDetailViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let image = info[UIImagePickerControllerEditedImage] as! UIImage
+        
+        // update contact image data
+        let realm: Realm = try! Realm()
+        try! realm.write {
+            self.contact.imageData = UIImagePNGRepresentation(image)
+        }
+        
+        // update new view profile image
+        DispatchQueue.main.async {
+            self.profileImageView.image = image
+        }
+        
+        picker.dismiss(animated: true, completion: nil)
     }
 }
