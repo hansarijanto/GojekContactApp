@@ -6,8 +6,9 @@ Disclaimer/FYI:
   - Listed down improvements that can be made to the code below
   - Can't implement everything I wanted and all test cases due to other interview deadlines
   - Focused test on functionality of infra instead of UI
-  - Long but extensive mini project, I enjoyed it alot
   - Icons and images were obtained from google image search (all png format)
+  - Left out 2 deprecated PureLayout function warnings, which are not used in the project
+  - Long but extensive mini project, I enjoyed it alot
   
 Assumptions:
   - Ordered contact list alphabetically by Name (First is prioritized), but above all favorite contacts of each section are shown first (also alphabetically ordered)
