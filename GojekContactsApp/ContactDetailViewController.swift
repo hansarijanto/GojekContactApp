@@ -9,6 +9,14 @@
 import UIKit
 import RealmSwift
 
+enum ContactDetailTextFieldType {
+    case firstname
+    case lastname
+    case mobile
+    case email
+    case unknown
+}
+
 enum ContactDetailViewControllerMode {
     case view
     case edit
@@ -68,7 +76,6 @@ class ContactDetailTableCellView: UITableViewCell {
         self.contentField.autoPinEdge(toSuperviewEdge: .bottom)
         self.contentField.autoPinEdge(.left, to: .right, of: self.mainLabel, withOffset: 32.0)
         self.contentField.autoPinEdge(toSuperviewEdge: .right)
-        
     }
     
     override func prepareForReuse() {
@@ -76,9 +83,13 @@ class ContactDetailTableCellView: UITableViewCell {
     }
 }
 
-class ContactDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ContactDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     // defining params
-    private(set) var mode    : ContactDetailViewControllerMode = .view
+    private(set) var mode    : ContactDetailViewControllerMode = .view {
+        didSet {
+            self.updateUIForMode()
+        }
+    }
     private(set) var contact : Contact
     
     // header elments
@@ -102,10 +113,18 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
     
     //table view
     private let tableView: UITableView = UITableView()
+    private var activeTextField: UITextField? = nil
+    private var doneButton: UIBarButtonItem? = nil
+    private var editButton: UIBarButtonItem? = nil
     
     init(contact: Contact) {
         self.contact = contact
         super.init(nibName: nil, bundle: nil)
+        
+        // set nav bar item
+        self.doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(ContactDetailViewController.didTapDoneButton))
+        
+        self.editButton = UIBarButtonItem(title: "Edit", style: .done, target: self, action: #selector(ContactDetailViewController.didTapEditButton))
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -264,6 +283,9 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.tableView.delegate = self
         self.tableView.tableFooterView = UIView() // remove extra table view cells
         self.tableView.register(ContactDetailTableCellView.self, forCellReuseIdentifier: "ContactDetailCell")
+        self.tableView.isScrollEnabled = false
+        
+        self.updateUIForMode()
     }
     
     override func viewDidLayoutSubviews() {
@@ -278,6 +300,18 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.callLabel.center = CGPoint(x: self.callButton.center.x, y: self.callButton.center.y + iconLabelOffset)
         self.emailLabel.center = CGPoint(x: self.emailButton.center.x, y: self.emailButton.center.y + iconLabelOffset)
         self.favoriteLabel.center = CGPoint(x: self.favoriteButton.center.x, y: self.favoriteButton.center.y + iconLabelOffset)
+    }
+    
+    private func updateUIForMode() {
+        DispatchQueue.main.async {
+            if self.mode == .edit {
+                self.navigationItem.rightBarButtonItem = self.doneButton
+                self.tableView.isUserInteractionEnabled = true
+            } else if self.mode == .view {
+                self.navigationItem.rightBarButtonItem = self.editButton
+                self.tableView.isUserInteractionEnabled = false
+            }
+        }
     }
     
     // MARK: Icon Touch Callbacks
@@ -316,6 +350,17 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.updateFavoriteButton()
     }
     
+    // MARK: Navigation Bar Item Callback
+    @objc public func didTapDoneButton() {
+        self.activeTextField?.resignFirstResponder()
+        self.mode = .view
+    }
+    
+    // MARK: Navigation Bar Item Callback
+    @objc public func didTapEditButton() {
+        self.mode = .edit
+    }
+    
     // MARK: Table View Datasource
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 58.0
@@ -327,16 +372,23 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         if indexPath.row == 0 {
             cell.mainLabel.text = "First Name"
             cell.contentField.text = self.contact.firstName
+            cell.contentField.keyboardType = .namePhonePad
         } else if indexPath.row == 1 {
             cell.mainLabel.text = "Last Name"
             cell.contentField.text = self.contact.lastName
+            cell.contentField.keyboardType = .namePhonePad
         } else if indexPath.row == 2 {
             cell.mainLabel.text = "mobile"
             cell.contentField.text = self.contact.mobile
+            cell.contentField.keyboardType = .phonePad
         } else if indexPath.row == 3 {
             cell.mainLabel.text = "email"
             cell.contentField.text = self.contact.email
+            cell.contentField.keyboardType = .emailAddress
         }
+        
+        cell.contentField.delegate = self
+        cell.selectionStyle = .none
         
         return cell
     }
@@ -344,13 +396,59 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 4
     }
     
     // MARK: Table View Delegate
+    private func textFieldOfType(tf: UITextField) -> ContactDetailTextFieldType {
+        
+        let firstNameTF = (self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! ContactDetailTableCellView).contentField
+        if firstNameTF == tf {
+            return .firstname
+        }
+        
+        let lastNameTF = (self.tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as! ContactDetailTableCellView).contentField
+        if lastNameTF == tf {
+            return .lastname
+        }
+        
+        let mobileTF = (self.tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! ContactDetailTableCellView).contentField
+        if mobileTF == tf {
+            return .mobile
+        }
+        
+        let emailTF = (self.tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! ContactDetailTableCellView).contentField
+        if emailTF == tf {
+            return .email
+        }
+        
+        return .unknown
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         return
+    }
+    
+    // MARK: TextField Delegate
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        self.activeTextField = textField
+        switch self.textFieldOfType(tf: textField) {
+        case .firstname:
+            break
+        case .lastname:
+            break
+        case .mobile:
+            break
+        case .email:
+            break
+        default:
+            break
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return true
     }
 }
