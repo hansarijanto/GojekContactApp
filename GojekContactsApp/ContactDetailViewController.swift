@@ -139,10 +139,11 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
     private let profileImageView      : UIImageView     = UIImageView()
     private let nameLabel             : UILabel         = UILabel()
     
-    private let messageButton    : ContactDetailIconButton    = ContactDetailIconButton()
-    private let callButton       : ContactDetailIconButton    = ContactDetailIconButton()
-    private let emailButton      : ContactDetailIconButton    = ContactDetailIconButton()
-    private let favoriteButton   : ContactDetailIconButton    = ContactDetailIconButton()
+    private let messageButton    : ContactDetailIconButton = ContactDetailIconButton()
+    private let callButton       : ContactDetailIconButton = ContactDetailIconButton()
+    private let emailButton      : ContactDetailIconButton = ContactDetailIconButton()
+    private let favoriteButton   : ContactDetailIconButton = ContactDetailIconButton()
+    private let cameraButton     : ContactDetailIconButton = ContactDetailIconButton()
     private let messageLabel     : UILabel     = UILabel()
     private let callLabel        : UILabel     = UILabel()
     private let emailLabel       : UILabel     = UILabel()
@@ -272,7 +273,16 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
         self.favoriteButton.autoSetDimensions(to: CGSize(width: iconWidth, height: iconWidth))
         self.updateFavoriteButton()
         
+        self.view.addSubview(self.cameraButton)
+        self.cameraButton.autoSetDimensions(to: CGSize(width: iconWidth, height: iconWidth))
+        self.cameraButton.iconImageView.image = UIImage(named: "camera")?.withRenderingMode(.alwaysTemplate)
+        self.cameraButton.iconImageView.tintColor = self.lightGreen
+        self.cameraButton.backgroundColor = .white
+        self.cameraButton.autoPinEdge(.bottom, to: .bottom, of: self.profileImageContainer)
+        self.cameraButton.autoPinEdge(.right, to: .right, of: self.profileImageContainer)
+        
         // register touch for icons
+        self.cameraButton.addTarget(self, action: #selector(ContactDetailViewController.didTapCameraIcon), for: .touchUpInside)
         self.messageButton.addTarget(self, action: #selector(ContactDetailViewController.didTapMessageIcon), for: .touchUpInside)
         self.callButton.addTarget(self, action: #selector(ContactDetailViewController.didTapCallIcon), for: .touchUpInside)
         self.emailButton.addTarget(self, action: #selector(ContactDetailViewController.didTapEmailIcon), for: .touchUpInside)
@@ -377,13 +387,20 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
                     self.callLabel.alpha = 0.0
                     self.emailLabel.alpha = 0.0
                     self.favoriteLabel.alpha = 0.0
+                    self.cameraButton.alpha = 1.0
                     self.view.layoutIfNeeded()
+                }, completion: {(finished: Bool) in
+                    if finished {
+                        self.cameraButton.isUserInteractionEnabled = true
+                    }
                 })
                 
             } else if self.mode == .view {
                 self.navigationItem.rightBarButtonItem = self.editButton
                 self.navigationItem.leftBarButtonItem = self.backButton
                 self.tableView.isUserInteractionEnabled = false
+                
+                self.cameraButton.isUserInteractionEnabled = false
                 
                 self.headerConstraint?.constant = self.headerLabelOffset
                 UIView.animate(withDuration: 0.2, animations: {
@@ -399,6 +416,7 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
                     } else {
                         self.emailButton.backgroundColor = .lightGray
                     }
+                    self.cameraButton.alpha = 0.0
                     self.callButton.alpha = 1.0
                     self.messageButton.alpha = 1.0
                     self.emailButton.alpha = 1.0
@@ -424,6 +442,10 @@ class ContactDetailViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     // MARK: Icon Touch Callbacks
+    @objc public func didTapCameraIcon() {
+        print("camera")
+    }
+    
     @objc public func didTapMessageIcon() {
         if let mobile = self.contact.mobile, MFMessageComposeViewController.canSendText() {
             let composeVC = MFMessageComposeViewController()
