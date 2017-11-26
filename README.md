@@ -9,11 +9,13 @@ Disclaimer/FYI:
   - Icons and images were obtained from google image search (all png format)
   - Left out 2 deprecated PureLayout function warnings, which are not used in the project
   - Long but extensive mini project, I enjoyed it alot
+  - One unit test "testDownloadContacts" fails when all unit test are run, however runs fine when run individually
   
 Assumptions:
   - Ordered contact list alphabetically by Name (First is prioritized), but above all favorite contacts of each section are shown first (also alphabetically ordered)
 
 Improvements:
+  - Scroll to selected row when editing (most important)
   - Dedicated logging and funneling of all Realm getters and writes
   - UITest on each functionality flow (i.e Changing a phone number, calling a contact, editing an image)
   - Refactoring of ContactsDetailVC to reduce bloated class, can be easily done with extensions to seperate Delegates and group realted functionailies together
