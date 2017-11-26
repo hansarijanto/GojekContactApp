@@ -61,6 +61,7 @@ class ContactsTest: XCTestCase {
         })
     }
     
+    // TODO: Currently passes when run alone, but fails when run as a whole.. (but chcked and results are still correct)
     // test api, realm persistence, and sorting contacts
     func testDownloadSortingContacts() {
         
