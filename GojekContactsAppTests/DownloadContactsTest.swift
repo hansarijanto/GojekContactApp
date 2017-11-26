@@ -91,12 +91,10 @@ class ContactsTest: XCTestCase {
             
             XCTAssertTrue(result)
         })
-        
-        self.sortingContactsTest()
     }
     
     // MARK: Functional test
-    func sortingContactsTest() {
+    func testSortingContacts() {
         // test sorting contacts
         if ContactManager.shared.contacts().count <= 0 {
             XCTFail("0 contacts available for sorting test")
