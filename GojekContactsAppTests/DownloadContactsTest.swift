@@ -30,14 +30,12 @@ class ContactDownloadDelegate: ContactManagerDelegate {
 }
 
 
-class DownloadContactsTest: XCTestCase {
+// This test requires an active internet connection
+class ContactsTest: XCTestCase {
     
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        
-        // delete all data in realm
-        ContactManager.shared.deleteAllContacts()
     }
     
     override func tearDown() {
@@ -45,6 +43,7 @@ class DownloadContactsTest: XCTestCase {
         super.tearDown()
     }
     
+    // test if http manager get func is working
     func testGetRequestAndInternet() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
@@ -53,6 +52,7 @@ class DownloadContactsTest: XCTestCase {
         })
     }
     
+    // test if gojek api available
     func testGojekAPI() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
@@ -61,7 +61,15 @@ class DownloadContactsTest: XCTestCase {
         })
     }
     
-    func testDownloadContacts() {
+    // test api, realm persistence, and sorting contacts
+    func testDownloadSortingContacts() {
+        
+        // delete all contacts data in realm
+        ContactManager.shared.deleteAllContacts()
+        if ContactManager.shared.contacts().count > 0 {
+            XCTFail("contacts not deleted for download test")
+        }
+        
         let delegate = ContactDownloadDelegate()
         ContactManager.shared.delegate = delegate
         
@@ -83,15 +91,34 @@ class DownloadContactsTest: XCTestCase {
             
             XCTAssertTrue(result)
         })
+        
+        self.sortingContactsTest()
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    // MARK: Functional test
+    func sortingContactsTest() {
+        // test sorting contacts
+        if ContactManager.shared.contacts().count <= 0 {
+            XCTFail("0 contacts available for sorting test")
+        }
+        
+        let contactsDict = ContactManager.shared.contactsSorted()
+        
+        for (alphabet, contacts) in contactsDict {
+            if alphabet == "#" || contacts.count <= 0 {
+                continue
+            }
+            
+            for i in 0..<contacts.count - 1 {
+                let j = i + 1
+                let firstContact  = contacts[i]
+                let secondContact = contacts[j]
+                if firstContact.isFavorite == secondContact.isFavorite {
+                    XCTAssertTrue(firstContact.firstName! <= secondContact.firstName!)
+                }
+            }
         }
     }
-    
 }
 
 

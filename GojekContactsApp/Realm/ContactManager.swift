@@ -252,6 +252,22 @@ class ContactManager {
         return isSuccess
     }
     
+    // remove contact
+    public func removeContact(contact: Contact) -> Bool {
+        var isSuccess: Bool = false
+        let realm: Realm = try! Realm()
+        do {
+            try realm.write {
+                realm.delete(contact)
+                isSuccess = true
+            }
+        } catch let error as NSError {
+            print("remove contact in Contact Manager failed: \(error)")
+        }
+        
+        return isSuccess
+    }
+    
     public func didDownloadGojekContacts() -> Bool {
         return UserDefaults.standard.bool(forKey: ContactManager.didDownloadKey)
     }

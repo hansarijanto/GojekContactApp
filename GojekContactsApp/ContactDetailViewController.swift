@@ -31,11 +31,11 @@ class ContactDetailViewController: UIViewController {
     private let profileImageView      : UIImageView     = UIImageView()
     private let nameLabel             : UILabel         = UILabel()
     
-    private let messageButton    : ContactDetailIconButton = ContactDetailIconButton()
-    private let callButton       : ContactDetailIconButton = ContactDetailIconButton()
-    private let emailButton      : ContactDetailIconButton = ContactDetailIconButton()
-    private let favoriteButton   : ContactDetailIconButton = ContactDetailIconButton()
-    private let cameraButton     : ContactDetailIconButton = ContactDetailIconButton()
+    let messageButton    : ContactDetailIconButton = ContactDetailIconButton()
+    let callButton       : ContactDetailIconButton = ContactDetailIconButton()
+    let emailButton      : ContactDetailIconButton = ContactDetailIconButton()
+    let favoriteButton   : ContactDetailIconButton = ContactDetailIconButton()
+    let cameraButton     : ContactDetailIconButton = ContactDetailIconButton()
     private let messageLabel     : UILabel     = UILabel()
     private let callLabel        : UILabel     = UILabel()
     private let emailLabel       : UILabel     = UILabel()
@@ -47,12 +47,12 @@ class ContactDetailViewController: UIViewController {
     private let headerLabelOffset: CGFloat = 12.0
     
     //table view
-    private let tableView: UITableView = UITableView()
+    let tableView: UITableView = UITableView()
     private var activeTextField: UITextField? = nil
-    private var doneButton: UIBarButtonItem? = nil
-    private var editButton: UIBarButtonItem? = nil
-    private var backButton: UIBarButtonItem? = nil
-    private var cancelButton: UIBarButtonItem? = nil
+    var doneButton: UIBarButtonItem? = nil
+    var editButton: UIBarButtonItem? = nil
+    var backButton: UIBarButtonItem? = nil
+    var cancelButton: UIBarButtonItem? = nil
     
     private(set) var didUpdateContact: Bool = false
     
@@ -254,7 +254,7 @@ class ContactDetailViewController: UIViewController {
         }
     }
     
-    private func updateUIForMode() {
+    public func updateUIForMode() {
         DispatchQueue.main.async {
             if self.mode == .edit {
                 self.navigationItem.rightBarButtonItem = self.doneButton
@@ -407,10 +407,10 @@ class ContactDetailViewController: UIViewController {
     @objc public func didTapCancelButton() {
         self.activeTextField?.resignFirstResponder()
         
-        let firstNameTF = (self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! ContactDetailTableCellView).contentField
-        let lastNameTF = (self.tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as! ContactDetailTableCellView).contentField
-        let mobileTF = (self.tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! ContactDetailTableCellView).contentField
-        let emailTF = (self.tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! ContactDetailTableCellView).contentField
+        let firstNameTF = (self.tableView(self.tableView, cellForRowAt: IndexPath(row: 0, section: 0)) as! ContactDetailTableCellView).contentField
+        let lastNameTF = (self.tableView(self.tableView, cellForRowAt: IndexPath(row: 1, section: 0)) as!ContactDetailTableCellView).contentField
+        let mobileTF = (self.tableView(self.tableView, cellForRowAt: IndexPath(row: 2, section: 0)) as! ContactDetailTableCellView).contentField
+        let emailTF = (self.tableView(self.tableView, cellForRowAt: IndexPath(row: 3, section: 0)) as! ContactDetailTableCellView).contentField
         
         DispatchQueue.main.async {
             firstNameTF.text = self.contact.firstName
@@ -429,10 +429,10 @@ class ContactDetailViewController: UIViewController {
         // update contact
         let realm: Realm = try! Realm()
         try! realm.write {
-            let firstNameTF = (self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! ContactDetailTableCellView).contentField
-            let lastNameTF = (self.tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as! ContactDetailTableCellView).contentField
-            let mobileTF = (self.tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! ContactDetailTableCellView).contentField
-            let emailTF = (self.tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! ContactDetailTableCellView).contentField
+            let firstNameTF = (self.tableView(self.tableView, cellForRowAt: IndexPath(row: 0, section: 0)) as! ContactDetailTableCellView).contentField
+            let lastNameTF = (self.tableView(self.tableView, cellForRowAt: IndexPath(row: 1, section: 0)) as!ContactDetailTableCellView).contentField
+            let mobileTF = (self.tableView(self.tableView, cellForRowAt: IndexPath(row: 2, section: 0)) as! ContactDetailTableCellView).contentField
+            let emailTF = (self.tableView(self.tableView, cellForRowAt: IndexPath(row: 3, section: 0)) as! ContactDetailTableCellView).contentField
             
             if let fn = firstNameTF.text {
                 if fn == "" {
